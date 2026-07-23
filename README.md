@@ -101,19 +101,37 @@ Nahraďte texty `od XX €` reálnymi sumami. Tabuľka je priamo v HTML — vyh�
 `class="price"` a upravte hodnoty.
 
 ### 7) Skutočné fotografie realizácií → priečinok `assets/img/`
-Zástupné obrázky (`.svg`) nahraďte vlastnými fotkami. Odporúčania:
-- formát **WebP** alebo JPG, šírka cca **800–1200 px**, pomer strán **4:3**,
-- pre rýchle načítanie web optimalizujte (napr. na <https://squoosh.app>).
 
-V `realizacie.html` každá dlaždica vyzerá takto — zmeňte `src`, `alt`, popis
-a kategóriu (`data-category`: `exterier`, `rolety`, `interier`, `siete`, `markizy`):
+Web je už **pripravený na reálne fotky**. Na potrebných miestach (galéria
+realizácií, produkty, domovská stránka) sa načítavajú tieto súbory — stačí ich
+nahrať do `assets/img/` **presne s týmto názvom**:
+
+| Názov súboru | Čo má obsahovať |
+|---|---|
+| `realizacia-exterierove-zaluzie.jpg` | Exteriérové žalúzie (napr. antracit, detail lamiel) |
+| `realizacia-roleta-dub.jpg` | Hliníková roleta – odtieň zlatý dub / drevodekor |
+| `realizacia-roleta-antracit.jpg` | Hliníková roleta – antracit |
+| `realizacia-siet-proti-hmyzu.jpg` | Sieť proti hmyzu (okno / dvere) |
+| `realizacia-markiza.jpg` | Markíza (balkón / terasa) |
+
+> **Dôležité:** kým daný súbor nenahráte, na jeho mieste sa automaticky zobrazí
+> zástupná ilustrácia (nikdy nie „rozbitý" obrázok). Po nahratí fotky s presným
+> názvom sa reálna fotka zobrazí sama.
+
+Odporúčania k fotkám:
+- formát **JPG** (alebo WebP), šírka cca **800–1200 px**, pomer strán **4:3**,
+- pred nahratím zmenšite/optimalizujte (napr. na <https://squoosh.app>) — mobilné
+  fotky mávajú 3–5 MB, na web stačí do ~300 kB.
+
+**Pridanie ďalšej realizácie do galérie** (`realizacie.html`): skopírujte jeden
+`<figure class="tile">` blok a upravte `src`, `alt`, popis a kategóriu
+(`data-category`: `exterier`, `rolety`, `interier`, `siete`, `markizy`):
 ```html
 <figure class="tile" data-category="exterier">
-  <img src="assets/img/vasa-fotka.webp" alt="Popis fotky">
+  <img src="assets/img/moja-fotka.jpg" alt="Popis fotky" loading="lazy">
   <figcaption class="tile__cap"><b>Názov realizácie</b><span>Lokalita</span></figcaption>
 </figure>
 ```
-Novú dlaždicu pridáte skopírovaním jedného `<figure>` bloku.
 
 ### 8) Texty na stránkach
 Všetky texty sú priamo v HTML súboroch — stačí ich prepísať v ktoromkoľvek
