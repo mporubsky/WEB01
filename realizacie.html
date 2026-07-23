@@ -13,13 +13,21 @@
   <meta property="og:title" content="Realizácie – galéria montáží | M&H žalúzie">
   <meta property="og:description" content="Galéria dokončených projektov s filtrami podľa typu tienenia.">
   <meta property="og:url" content="https://mh-zaluzie.sk/realizacie.html">
-  <meta property="og:image" content="https://mh-zaluzie.sk/assets/img/og-image.svg">
+  <meta property="og:image" content="https://mh-zaluzie.sk/assets/img/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://mh-zaluzie.sk/assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="css/styles.css" as="style">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#obsah">Preskočiť na obsah</a>
 
   <header class="site-header">
     <div class="container header-inner">
@@ -43,7 +51,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="obsah" tabindex="-1">
     <section class="page-hero">
       <div class="container">
         <ul class="breadcrumb"><li><a href="index.html">Domov</a></li><li>Realizácie</li></ul>
@@ -63,11 +71,11 @@
         </div>
 
         <div class="gallery" data-gallery>
-          <figure class="tile" data-category="exterier" data-reveal><img src="assets/img/realizacia-exterierove-zaluzie.jpg" onerror="this.onerror=null;this.src='assets/img/product-exterier.svg'" alt="Exteriérové žalúzie v antracitovej farbe na komerčnej budove" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Exteriérové žalúzie – antracit</b><span>Komerčný objekt</span></figcaption></figure>
-          <figure class="tile" data-category="rolety" data-reveal data-reveal-delay="1"><img src="assets/img/realizacia-roleta-dub.jpg" onerror="this.onerror=null;this.src='assets/img/product-rolety.svg'" alt="Exteriérová hliníková roleta v odtieni zlatý dub" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Hliníková roleta – zlatý dub</b><span>Rodinný dom</span></figcaption></figure>
-          <figure class="tile" data-category="rolety" data-reveal data-reveal-delay="2"><img src="assets/img/realizacia-roleta-antracit.jpg" onerror="this.onerror=null;this.src='assets/img/product-rolety.svg'" alt="Exteriérová hliníková roleta v antracitovej farbe" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Hliníková roleta – antracit</b><span>Rodinný dom</span></figcaption></figure>
-          <figure class="tile" data-category="siete" data-reveal><img src="assets/img/realizacia-siet-proti-hmyzu.jpg" onerror="this.onerror=null;this.src='assets/img/product-siete.svg'" alt="Sieť proti hmyzu na balkónových dverách" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Sieť proti hmyzu</b><span>Balkónové dvere</span></figcaption></figure>
-          <figure class="tile" data-category="markizy" data-reveal data-reveal-delay="1"><img src="assets/img/realizacia-markiza.jpg" onerror="this.onerror=null;this.src='assets/img/product-markizy.svg'" alt="Balkónová markíza s červeno-bielym pruhovaným poťahom" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Balkónová markíza</b><span>Bytový dom</span></figcaption></figure>
+          <figure class="tile" data-category="exterier" data-reveal><img decoding="async" src="assets/img/realizacia-exterierove-zaluzie.jpg" onerror="this.onerror=null;this.src='assets/img/product-exterier.svg'" alt="Exteriérové žalúzie v antracitovej farbe na komerčnej budove" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Exteriérové žalúzie – antracit</b><span>Komerčný objekt</span></figcaption></figure>
+          <figure class="tile" data-category="rolety" data-reveal data-reveal-delay="1"><img decoding="async" src="assets/img/realizacia-roleta-dub.jpg" onerror="this.onerror=null;this.src='assets/img/product-rolety.svg'" alt="Exteriérová hliníková roleta v odtieni zlatý dub" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Hliníková roleta – zlatý dub</b><span>Rodinný dom</span></figcaption></figure>
+          <figure class="tile" data-category="rolety" data-reveal data-reveal-delay="2"><img decoding="async" src="assets/img/realizacia-roleta-antracit.jpg" onerror="this.onerror=null;this.src='assets/img/product-rolety.svg'" alt="Exteriérová hliníková roleta v antracitovej farbe" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Hliníková roleta – antracit</b><span>Rodinný dom</span></figcaption></figure>
+          <figure class="tile" data-category="siete" data-reveal><img decoding="async" src="assets/img/realizacia-siet-proti-hmyzu.jpg" onerror="this.onerror=null;this.src='assets/img/product-siete.svg'" alt="Sieť proti hmyzu na balkónových dverách" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Sieť proti hmyzu</b><span>Balkónové dvere</span></figcaption></figure>
+          <figure class="tile" data-category="markizy" data-reveal data-reveal-delay="1"><img decoding="async" src="assets/img/realizacia-markiza.jpg" onerror="this.onerror=null;this.src='assets/img/product-markizy.svg'" alt="Balkónová markíza s červeno-bielym pruhovaným poťahom" loading="lazy" width="800" height="600"><figcaption class="tile__cap"><b>Balkónová markíza</b><span>Bytový dom</span></figcaption></figure>
         </div>
 
         <p class="text-muted text-center mt-2" style="margin-top:2rem">Ukážka našich realizácií. Priebežne pridávame ďalšie dokončené projekty.</p>

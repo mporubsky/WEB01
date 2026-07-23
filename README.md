@@ -181,8 +181,10 @@ priečinka webu (zvyčajne `public_html/` alebo `www/`). Nič viac netreba.
 - [ ] Nahradiť **zástupné obrázky** reálnymi fotkami (`assets/img/`)
 - [ ] Doplniť odkazy na **sociálne siete** (ak existujú)
 - [ ] Skontrolovať / doplniť **Ochranu osobných údajov** podľa reálnych procesov
-- [ ] Nahradiť `og-image.svg` rastrovým obrázkom **1200×630 px** (JPG/PNG) pre
-      pekné náhľady pri zdieľaní na sociálnych sieťach (a upraviť `og:image` cesty)
+- [x] ~~Rastrový OG obrázok (1200×630) pre náhľady na sociálnych sieťach~~ —
+      hotové: `assets/img/og-image.png` (voliteľne nahraďte vlastným záberom)
+- [x] ~~Rastrové favicony / PWA ikony~~ — hotové (`favicon-32.png`,
+      `apple-touch-icon.png`, `icon-192/512.png`)
 
 ---
 

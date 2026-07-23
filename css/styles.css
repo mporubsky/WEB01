@@ -186,6 +186,14 @@ p:last-child { margin-bottom: 0; }
 .btn--lg { padding: 1.05rem 2rem; font-size: var(--fs-500); }
 .btn--sm { padding: .6rem 1.1rem; font-size: var(--fs-300); }
 
+/* Skip-link (preskočiť na obsah) – pre klávesnicu a čítačky obrazovky */
+.skip-link {
+  position: absolute; left: 8px; top: -60px; z-index: 300;
+  background: var(--c-dark); color: #fff; padding: .7rem 1.1rem; border-radius: 10px;
+  font-weight: 700; box-shadow: var(--shadow); transition: top .2s var(--ease);
+}
+.skip-link:focus { top: 8px; color: #fff; }
+
 /* 6. HLAVIČKA A NAVIGÁCIA ============================================== */
 .site-header {
   position: sticky; top: 0; z-index: 100;
@@ -632,3 +640,19 @@ html.js [data-reveal].is-visible { opacity: 1; transform: none; }
 .stack > * + * { margin-top: 1rem; }
 .stack-lg > * + * { margin-top: 2rem; }
 .divider-band { height: 4px; width: 60px; background: var(--c-accent); border-radius: 4px; margin: 1rem 0; }
+
+/* 21. TLAČOVÉ ŠTÝLY (print) =========================================== */
+@media print {
+  .site-header, .mobile-cta, .cookie-bar, .nav-toggle, .cta-band,
+  .footer-social, .skip-link, .hero__cta, .wizard-wrap { display: none !important; }
+  body { color: #000; background: #fff; padding: 0; }
+  a { color: #000; text-decoration: underline; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .8em; color: #555; }
+  .hero, .page-hero, .section--dark, .edu, .footer-bottom, .site-footer {
+    background: #fff !important; color: #000 !important;
+  }
+  .hero h1, .page-hero h1, .section--dark h2, .edu h2 { color: #000 !important; }
+  .section { padding-block: 1rem; }
+  .card, .compare, .price-table, .guarantee { box-shadow: none !important; border-color: #ccc; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+}
