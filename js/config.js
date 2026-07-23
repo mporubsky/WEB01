@@ -67,9 +67,10 @@ window.MH_CONFIG = {
      blok s odkazom na mapu.
      ---------------------------------------------------------------------- */
   maps: {
-    embedSrc: "",                        // ⚠ (voliteľné) src z iframe Google Máp
+    // Vložená mapa presnej polohy podľa Google profilu firmy (bez API kľúča):
+    embedSrc: "https://maps.google.com/maps?q=48.1209708,17.0959215&z=16&hl=sk&output=embed",
     // Priamy odkaz na otvorenie v Google Mapách:
-    directLink: "https://www.google.com/maps/search/?api=1&query=Budat%C3%ADnska+3228%2F51+Bratislava"
+    directLink: "https://www.google.com/maps?cid=14620963035425995864"
   },
 
   /* ---- Analytika a meranie (spúšťa sa až po súhlase s cookies) ---------- */
@@ -82,12 +83,12 @@ window.MH_CONFIG = {
   social: {
     facebook:     "",                    // napr. "https://facebook.com/mhzaluzie"
     instagram:    "",
-    googleReviews: ""                    // odkaz na profil Google recenzií
+    googleReviews: "https://www.google.com/maps?cid=14620963035425995864"  // Google profil / recenzie
   },
 
   /* ---- Súhrnné hodnotenie (Social proof) -------------------------------- */
   reviews: {
-    rating: "5,0",
-    count:  48                           // ⚠ upraviť podľa reálneho počtu recenzií
+    rating: "4,9",                       // reálne priemerné hodnotenie na Google
+    count:  null                         // ⚠ (voliteľné) doplniť reálny počet recenzií
   }
 };

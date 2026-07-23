@@ -493,6 +493,24 @@ p:last-child { margin-bottom: 0; }
 .review__author b { font-size: .92rem; color: var(--c-dark); }
 .review__author span { font-size: var(--fs-200); color: var(--c-muted); }
 
+/* Google rating panel (odkaz na reálne recenzie) */
+.google-rating {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.25rem 2.5rem;
+  max-width: 840px; margin-inline: auto; text-align: left;
+  background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 4vw, 2.5rem); box-shadow: var(--shadow-sm); color: var(--c-text);
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+.google-rating:hover { transform: translateY(-3px); box-shadow: var(--shadow); color: var(--c-text); }
+.google-rating__score { display: flex; align-items: center; gap: 1rem; }
+.google-rating__score .big { font-size: clamp(2.6rem, 2rem + 2vw, 3.6rem); font-weight: 800; color: var(--c-dark); line-height: 1; }
+.google-rating__score .stars { color: var(--c-star); font-size: 1.35rem; letter-spacing: 2px; display: block; }
+.google-rating__score small { color: var(--c-muted); display: block; margin-top: .3rem; }
+.google-rating__cta { flex: 1; min-width: 240px; }
+.google-rating__cta p { color: var(--c-muted); font-size: var(--fs-300); margin-bottom: 1rem; }
+.google-rating__cta .btn { pointer-events: none; }
+@media (max-width: 560px) { .google-rating { justify-content: flex-start; } }
+
 /* 16. FORMULÁRE ======================================================= */
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.25rem; }
 .field { display: flex; flex-direction: column; gap: .4rem; }
