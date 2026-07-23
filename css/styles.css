@@ -208,6 +208,7 @@ p:last-child { margin-bottom: 0; }
 .main-nav { display: flex; align-items: center; gap: .35rem; }
 .main-nav a {
   color: var(--c-dark); font-weight: 600; font-size: .97rem; padding: .5rem .8rem; border-radius: 8px;
+  white-space: nowrap;
   transition: background .15s var(--ease), color .15s var(--ease);
 }
 .main-nav a:hover { background: var(--c-bg-tint); color: var(--c-dark); }
