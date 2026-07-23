@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" role="img" aria-label="hero">
+  <defs>
+    <linearGradient id="wallhero" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a4f63"/><stop offset="1" stop-color="#24313f"/>
+    </linearGradient>
+    <linearGradient id="glasshero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a9c0d3"/><stop offset="1" stop-color="#597a97"/>
+    </linearGradient>
+    <linearGradient id="slathero" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2C3E50" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#2C3E50" stop-opacity="0.78"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="720" fill="url(#wallhero)"/>  <circle cx="756" cy="144" r="115" fill="#E67E22" opacity="0.18"/>  <rect x="99" y="115" width="702" height="475" rx="6" fill="#ffffff"/>  <rect x="109" y="125" width="682" height="455" fill="url(#glasshero)"/>  <polygon points="109,580 381,125 559,125 109,580" fill="#ffffff" opacity="0.10"/>  <rect x="109" y="125.0" width="682" height="39.4" fill="url(#slathero)"/>  <rect x="109" y="166.4" width="682" height="39.4" fill="url(#slathero)"/>  <rect x="109" y="207.7" width="682" height="39.4" fill="url(#slathero)"/>  <rect x="109" y="249.1" width="682" height="39.4" fill="url(#slathero)"/>  <rect x="109" y="290.5" width="682" height="39.4" fill="url(#slathero)"/>  <rect x="109" y="331.8" width="682" height="39.4" fill="url(#slathero)"/>  <rect x="109" y="373.2" width="682" height="6" fill="#2C3E50"/>  <rect x="99" y="115" width="702" height="475" rx="6" fill="none" stroke="#2C3E50" stroke-opacity="0.12" stroke-width="2"/>
+</svg>

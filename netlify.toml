@@ -1,0 +1,37 @@
+# Konfigurácia pre nasadenie na Netlify (voliteľné).
+# Web je statický – žiadny build proces nie je potrebný.
+
+[build]
+  publish = "."
+  command = ""
+
+# Vlastná 404 stránka
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# Bezpečnostné a výkonové hlavičky
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Dlhá cache pre statické assety (obrázky, CSS, JS)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

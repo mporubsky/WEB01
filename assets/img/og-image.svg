@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="M&amp;H žalúzie">
+  <defs>
+    <linearGradient id="ogbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2C3E50"/><stop offset="1" stop-color="#24313f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ogbg)"/>
+  <circle cx="1050" cy="120" r="220" fill="#E67E22" opacity="0.16"/>
+  <g stroke="#E67E22" stroke-width="10" stroke-linecap="round" opacity="0.9">
+    <line x1="820" y1="250" x2="1120" y2="250"/>
+    <line x1="820" y1="300" x2="1120" y2="300"/>
+    <line x1="820" y1="350" x2="1120" y2="350"/>
+  </g>
+  <line x1="820" y1="400" x2="1120" y2="400" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+  <text x="90" y="250" font-family="Arial, sans-serif" font-size="76" font-weight="800" fill="#ffffff">M&amp;H <tspan fill="#E67E22">žalúzie</tspan></text>
+  <text x="92" y="320" font-family="Arial, sans-serif" font-size="34" font-weight="600" fill="#c4d1de">Profesionálne tienenie na mieru</text>
+  <text x="92" y="372" font-family="Arial, sans-serif" font-size="28" fill="#9fb1c2">Exteriérové · interiérové žalúzie · rolety · siete · markízy</text>
+  <text x="92" y="520" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff">Bratislava a okolie · Zameranie ZDARMA</text>
+  <text x="92" y="562" font-family="Arial, sans-serif" font-size="26" fill="#E67E22">mh-zaluzie.sk</text>
+</svg>
