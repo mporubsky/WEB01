@@ -1,20 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Exteriérové žalúzie">
-  <defs>
-    <linearGradient id="wallproductexterier" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#3a4f63"/><stop offset="1" stop-color="#24313f"/>
-    </linearGradient>
-    <linearGradient id="glassproductexterier" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#9fb8cc"/><stop offset="1" stop-color="#5b7d8e"/>
-    </linearGradient>
-    <linearGradient id="slatproductexterier" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#2C3E50" stop-opacity="0.95"/>
-      <stop offset="1" stop-color="#2C3E50" stop-opacity="0.78"/>
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#wallproductexterier)"/>  <circle cx="672" cy="120" r="96" fill="#E67E22" opacity="0.18"/>  <rect x="88" y="96" width="624" height="396" rx="6" fill="#ffffff"/>  <rect x="98" y="106" width="604" height="376" fill="url(#glassproductexterier)"/>  <polygon points="98,482 339,106 496,106 98,482" fill="#ffffff" opacity="0.10"/>  <rect x="98" y="106.0" width="604" height="39.8" fill="url(#slatproductexterier)"/>  <rect x="98" y="147.8" width="604" height="39.8" fill="url(#slatproductexterier)"/>  <rect x="98" y="189.6" width="604" height="39.8" fill="url(#slatproductexterier)"/>  <rect x="98" y="231.3" width="604" height="39.8" fill="url(#slatproductexterier)"/>  <rect x="98" y="273.1" width="604" height="39.8" fill="url(#slatproductexterier)"/>  <rect x="98" y="314.9" width="604" height="6" fill="#2C3E50"/>  <rect x="88" y="96" width="624" height="396" rx="6" fill="none" stroke="#2C3E50" stroke-opacity="0.12" stroke-width="2"/>
-  <g>
-    <rect x="0" y="554" width="800" height="46" fill="#2C3E50" opacity="0.0"/>
-    <rect x="16" y="548" rx="8" height="34" width="187" fill="#2C3E50" opacity="0.92"/>
-    <text x="30" y="570" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Exteriérové žalúzie</text>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Exteriérové žalúzie"><defs>
+<linearGradient id="wallex" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a423f"/><stop offset="1" stop-color="#231f1d"/></linearGradient>
+<linearGradient id="glassex" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#93a0a8"/><stop offset="1" stop-color="#5f6b73"/></linearGradient>
+<linearGradient id="slatex" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38322F" stop-opacity="0.96"/><stop offset="1" stop-color="#38322F" stop-opacity="0.8"/></linearGradient>
+</defs>
+<rect width="800" height="600" fill="url(#wallex)"/>
+<circle cx="672" cy="120" r="102" fill="#8B3A2C" opacity="0.20"/>
+<rect x="88" y="96" width="624" height="396" rx="6" fill="#ffffff"/>
+<rect x="98" y="106" width="604" height="376" fill="url(#glassex)"/>
+<polygon points="98,482 339,106 496,106 98,482" fill="#ffffff" opacity="0.10"/><rect x="98" y="106.0" width="604" height="39.8" fill="url(#slatex)"/><rect x="98" y="147.8" width="604" height="39.8" fill="url(#slatex)"/><rect x="98" y="189.6" width="604" height="39.8" fill="url(#slatex)"/><rect x="98" y="231.3" width="604" height="39.8" fill="url(#slatex)"/><rect x="98" y="273.1" width="604" height="39.8" fill="url(#slatex)"/><rect x="98" y="314.9" width="604" height="6" fill="#38322F"/><rect x="88" y="96" width="624" height="396" rx="6" fill="none" stroke="#38322F" stroke-opacity="0.14" stroke-width="2"/><rect x="40" y="548" rx="8" height="34" width="187" fill="#38322F" opacity="0.92"/><text x="54" y="570" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#fff">Exteriérové žalúzie</text></svg>
