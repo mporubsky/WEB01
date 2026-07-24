@@ -1,6 +1,7 @@
 /* =========================================================================
-   M&H žalúzie — Filtre galérie realizácií (realizacie.html)
-   Filtruje dlaždice podľa atribútu data-category.
+   M&H žalúzie — Filtre galérie realizácií + „Zobraziť viac" (realizacie.html)
+   Filtruje dlaždice podľa data-category a postupne dávkuje zobrazenie,
+   aby sa pri veľkom počte fotiek nenačítalo všetko naraz.
    ========================================================================= */
 (function () {
   "use strict";
@@ -8,19 +9,44 @@
   var gallery = document.querySelector("[data-gallery]");
   if (!filters || !gallery) return;
 
+  var moreBtn = document.querySelector("[data-gallery-more]");
   var tiles = Array.prototype.slice.call(gallery.querySelectorAll("[data-category]"));
+  var STEP = 9;           // koľko dlaždíc pribudne naraz
+  var current = "all";
+  var shown = STEP;
+
+  function matches(t) { return current === "all" || t.getAttribute("data-category") === current; }
+
+  function render() {
+    var seen = 0;
+    tiles.forEach(function (t) {
+      if (matches(t)) {
+        seen++;
+        t.classList.toggle("is-hidden", seen > shown);
+      } else {
+        t.classList.add("is-hidden");
+      }
+    });
+    if (moreBtn) moreBtn.hidden = seen <= shown;
+  }
 
   filters.addEventListener("click", function (e) {
     var btn = e.target.closest(".filter-btn");
     if (!btn) return;
     filters.querySelectorAll(".filter-btn").forEach(function (b) {
-      b.classList.toggle("is-active", b === btn);
-      b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+      var on = b === btn;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
     });
-    var cat = btn.getAttribute("data-filter");
-    tiles.forEach(function (t) {
-      var show = cat === "all" || t.getAttribute("data-category") === cat;
-      t.classList.toggle("is-hidden", !show);
-    });
+    current = btn.getAttribute("data-filter");
+    shown = STEP;
+    render();
   });
+
+  if (moreBtn) moreBtn.addEventListener("click", function () {
+    shown += STEP;
+    render();
+  });
+
+  render();
 })();
