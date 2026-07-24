@@ -170,6 +170,18 @@ specific bugs this catches (they are subtle and easy to reintroduce).
 - `references/seo-legal-perf.md` — SEO, JSON-LD, GDPR/cookies, performance, deploy files.
 - `references/pitfalls.md` — concrete bugs from real builds and how to avoid them.
 
+## Launcher command (guaranteed invocation)
+
+Because "build me a website" is a task the model often just does directly, this
+skill can under-trigger on its own. A bundled slash command forces it:
+`assets/commands/build-web.md` (+ Slovak alias `postav-web.md`). Installed as a
+command, typing `/build-web <brief>` explicitly invokes this skill and passes the
+brief as arguments — 100% reliable, no reliance on auto-triggering.
+
+To install per project: copy into the repo's `.claude/commands/`. To install
+globally (all projects): copy into `~/.claude/commands/`. The user can always
+also invoke the skill by name ("use the local-business-website skill").
+
 ## Bundled scripts
 - `scripts/gen_placeholder_svgs.py` — branded SVG placeholders (hero, cards, OG).
 - `scripts/render_raster.js` — SVG → PNG (OG 1200×630 + favicons) via Chromium.
