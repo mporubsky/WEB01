@@ -267,6 +267,23 @@ they can gate a delivery. They are deliberately quiet about known non-issues
 (text over gradients, inline links, `aria-hidden` decoration) — a checker that
 cries wolf gets ignored, and then the real bug ships.
 
-Dependencies these assume: `playwright-core` (Chromium at `/opt/pw-browsers`),
-`Pillow`, and `vtracer` for logo tracing. Install if missing; the scripts print
-clear errors otherwise.
+### What each script needs — and what to do when it isn't there
+The site itself has **no dependencies**; only the tooling does. Check what's
+available before planning the build, and degrade gracefully rather than skipping
+verification silently:
+
+| script | needs | if unavailable |
+|---|---|---|
+| `audit_html.py` | Python stdlib only | always runs — never skip it |
+| `optimize_photos.py`, `to_webp.py` | Pillow | `pip install pillow`; if truly impossible, ship the originals and say so |
+| `gen_placeholder_svgs.py` | Python stdlib only | always runs |
+| `verify_site.js`, `audit_browser.js`, `render_raster.js` | `playwright-core` + Chromium | see below |
+| logo tracing | `vtracer` | trace by hand or ask the client for a vector logo |
+
+Chromium is present in Claude Code sandboxes (`/opt/pw-browsers`) but **not in
+every environment** — a plain chat sandbox usually has Python but no browser.
+Without it you lose the rendered checks (overflow, contrast, tap targets, OG
+raster). Then: run `audit_html.py`, re-read the pages as a customer, check the
+contrast of your palette numerically against the token table in
+`references/components.md`, and **tell the user which checks you could not run**
+— don't present the site as verified.
