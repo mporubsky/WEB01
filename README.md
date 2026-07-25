@@ -67,6 +67,13 @@ phone:     "+421 9XX XXX XXX",   // ← reálne číslo, ako sa zobrazí
 phoneHref: "+4219XXXXXXXX",       // ← to isté číslo bez medzier (pre klik-na-volanie)
 ```
 
+> **⚠ Po úprave `config.js` / `styles.css` „premažte cache".** Prehliadače si
+> ukladajú staré verzie `js/*.js` a `css/styles.css`. Aby návštevníci videli
+> zmeny hneď, v každom `*.html` súbore zvýšte číslo verzie na konci odkazov,
+> napr. `js/config.js?v=20260725` → `js/config.js?v=20260726` (stačí prepísať
+> hromadne). Bez toho môžete vy aj zákazníci vidieť staré údaje, kým sa cache
+> sama neobnoví (rádovo minúty). Do prehľadu zmien stačí použiť dátum.
+
 ### 2) Aby formulár reálne posielal e-maily → `js/config.js` (sekcia `form`)
 Bez nastavenia formulár otvorí e-mailového klienta (funguje, ale nie je to ideálne).
 Pre plnohodnotné odosielanie priamo z webu odporúčame **bezplatný Web3Forms**:
