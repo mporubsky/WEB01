@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Markízy a tienenie terás"><defs>
+<linearGradient id="wallma" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6d7c9"/><stop offset="1" stop-color="#c9b39d"/></linearGradient>
+<linearGradient id="glassma" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b7c2c9"/><stop offset="1" stop-color="#8a99a1"/></linearGradient>
+<linearGradient id="slatma" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8B3A2C" stop-opacity="0.96"/><stop offset="1" stop-color="#8B3A2C" stop-opacity="0.8"/></linearGradient>
+</defs>
+<rect width="800" height="600" fill="url(#wallma)"/>
+<circle cx="672" cy="120" r="102" fill="#8B3A2C" opacity="0.20"/>
+<rect x="88" y="96" width="624" height="396" rx="6" fill="#ffffff"/>
+<rect x="98" y="106" width="604" height="376" fill="url(#glassma)"/>
+<polygon points="98,482 339,106 496,106 98,482" fill="#ffffff" opacity="0.10"/><rect x="98" y="106.0" width="604" height="60.7" fill="#8B3A2C"/><rect x="98" y="168.7" width="604" height="60.7" fill="url(#slatma)"/><rect x="98" y="231.3" width="604" height="6" fill="#38322F"/><rect x="88" y="96" width="624" height="396" rx="6" fill="none" stroke="#38322F" stroke-opacity="0.14" stroke-width="2"/><rect x="40" y="548" rx="8" height="34" width="233" fill="#38322F" opacity="0.92"/><text x="54" y="570" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#fff">Markízy a tienenie terás</text></svg>

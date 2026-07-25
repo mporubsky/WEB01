@@ -1,0 +1,16 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Závislosti / build (pre prípadné budúce rozšírenie)
+node_modules/
+__pycache__/
+*.pyc
+dist/
+.cache/
+
+# Logy
+*.log
