@@ -248,3 +248,72 @@ the bottom 12 % cleared it with margin). Then:
 
 Same sweep applies to date stamps and "Shot on …" overlays. Check the corners of
 client photos before wiring any of them in.
+
+## 26. A photo captioned as the wrong product
+**Symptom:** the same photo is used in two places (a homepage product card *and* a
+gallery tile) and both call it an **interior** blind — but it is actually an
+**exterior** blind shot from inside the room. The owner spots it instantly; you
+never would from a thumbnail.
+**Cause:** wiring photos by filename/position without identifying what is in each
+one. Product categories that look alike at a glance are the trap: an exterior
+venetian blind photographed **from inside** (wide slats outside the glass, side
+guide wires) reads as "blinds on a window" and gets filed as interior; a fabric
+day/night roller vs. aluminium venetian; a conservatory screen vs. an awning.
+**Fix:** *look* at every photo before you caption it and before you pick which
+category it belongs to — open it, don't trust the filename. A photo reused in
+several places must be re-checked in **each** context (a product card asserts a
+category; a gallery tile asserts a caption + a `data-category` filter). When you
+rename it to reflect reality, rename **both** the `.jpg` and `.webp` and update
+every reference. Domain tell-tales worth learning: exterior blinds sit *outside*
+the glass and have side guide cables; interior blinds/rollers sit on the sash.
+When unsure, ask the owner — the same rule as "seven photos were captioned wrong".
+
+## 27. Invented product brands, model names or suppliers
+**Symptom:** the copy names a specific product line ("rad ISOLINE"), a model code
+("lamela Z-90 vs C-80") or a component supplier ("motory Somfy") that the brief
+never mentioned. It reads as authoritative technical detail — and the owner may
+not sell that brand at all, which is a factual claim they can't stand behind.
+**Cause:** the same instinct as pitfall 19 (a vague claim "improved" into a
+precise one), but for **product specifics**: a plausible-sounding model or brand
+makes the page feel expert, so the model supplies one. Model codes and premium
+supplier names are exactly what an LLM confabulates convincingly.
+**Fix:** treat product brands, model/series names and named suppliers as facts
+that must come from the brief or the owner — never invented. Prefer **generic,
+verifiable descriptions**: "exteriérové hliníkové žalúzie", "profil v tvare Z /
+C" (a real geometric descriptor, not a model code), "motorické ovládanie"
+(without naming a motor brand). If the owner confirms a specific brand, use it;
+otherwise stay generic. This is the never-fabricate principle extended from
+reviews/numbers to the product catalogue itself.
+
+## 28. A benefit that sounds good but is domain-wrong or unprovable
+**Symptom:** "exterior blinds save on **winter heating** — an insulating cushion
+that pays back all year"; "will last **decades**"; "get a **quote in 30 seconds**".
+Each reads well; each is wrong or unsupportable. Exterior shading's real job is
+blocking summer solar gain — the winter-heating story is dubious; fabric awnings
+and motors last ~10–15 years, not "decades"; the wizard sends an inquiry in 30
+seconds, it does not return a price.
+**Cause:** AI-generated marketing rounds every product up to the maximum benefit
+and invents symmetry ("great in summer *and* winter"), plausible-but-inflated
+lifespans, and headlines that promise more than the mechanism delivers.
+**Fix:** claims about how a product performs are facts too. Keep quantified
+benefits to defensible "up to" figures the owner can source; describe realistic
+lifespan ("dlhé roky", not "desiatky rokov"); make the CTA describe what actually
+happens ("*Vyžiadajte si* cenovú ponuku za 30 sekúnd", not "*Získajte*"). When you
+don't know the physics of the product, don't assert it — cut the claim rather than
+guess. Read the finished copy as a skeptical customer and delete anything you
+couldn't prove.
+
+## 29. Structured data (JSON-LD) drifts from `config.js`
+**Symptom:** the visible phone/e-mail update the moment the owner edits
+`config.js`, but Google reads a **different** number — the JSON-LD still has the
+old/placeholder value (e.g. `+421900000000`, `info@…placeholder`).
+**Cause:** the LocalBusiness JSON-LD block is **static HTML**; `main.js` binds
+`config.js` into visible `data-mh` elements but not into the JSON-LD `<script>`.
+So the two silently diverge — worst right after the owner fills real contact
+details, exactly when it matters for local SEO.
+**Fix:** whenever you change contact details in `config.js`, update the JSON-LD
+`telephone`/`email`/`address` in the HTML by hand too. `audit_html.py` now WARNs
+when JSON-LD `telephone`/`email` doesn't match `config.js` — treat that warning as
+a release blocker for launch even though it isn't a hard error. Same class as
+pitfall 21 (`site.webmanifest` colour): any value that lives in a second,
+non-config place must be kept in sync deliberately.

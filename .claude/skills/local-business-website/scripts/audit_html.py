@@ -21,6 +21,8 @@ zdrojové HTML a hľadá chyby, ktoré sa v prehliadači nemusia prejaviť:
     - <img> bez width/height (spôsobuje poskakovanie rozloženia)
     - CSS/JS bez ?v= verzie (cache-busting)
     - chýbajúca cookie lišta
+    - telefón / e-mail v JSON-LD nesedí s config.js (JSON-LD je statický,
+      main.js ho neplní – po doplnení údajov ostane v štruktúrovaných dátach starý)
 
 Vedomé false-positives: `data-mh-href="..."` sa tvári ako href — skript ho
 vylučuje. Stránka 404 nepotrebuje canonical/OG (je noindex).
@@ -165,6 +167,28 @@ if cfg:
         if _v and PLACEHOLDER.search(_v):
             add("ERROR", os.path.basename(a.config),
                 f'zástupná hodnota v config.js: {_k} = "{_v}" – zobrazí sa návštevníkom')
+
+# JSON-LD (štruktúrované dáta) je STATICKÝ – main.js doň nič nedopĺňa. Keď
+# majiteľ neskôr doplní telefón/e-mail do config.js, v JSON-LD ostane pôvodná
+# (často zástupná) hodnota a Google si prečíta nesprávny kontakt. Porovnáme ich.
+if cfg:
+    def _cfg_val(key):
+        m = re.search(r'\b' + key + r':\s*"([^"]*)"', cfg)
+        return m.group(1) if m else ""
+    _norm = lambda v: re.sub(r"[^\dxX+]", "", v or "").upper()
+    _c_email = _cfg_val("email")
+    _c_tel = _cfg_val("phoneHref") or _cfg_val("phone")
+    for p in pages:
+        s = open(p, encoding="utf-8").read()
+        for block in re.findall(r'(?is)application/ld\+json[^>]*>(.*?)</script>', s):
+            jt = re.search(r'"telephone"\s*:\s*"([^"]*)"', block)
+            je = re.search(r'"email"\s*:\s*"([^"]*)"', block)
+            if jt and _c_tel and _norm(jt.group(1)) != _norm(_c_tel):
+                add("WARN", p, f'JSON-LD telephone „{jt.group(1)}" nesedí s config.js '
+                               f'(business.phoneHref) – JSON-LD je statický, oprav ho ručne')
+            if je and _c_email and je.group(1).lower() != _c_email.lower():
+                add("WARN", p, f'JSON-LD email „{je.group(1)}" nesedí s config.js '
+                               f'(business.email) – JSON-LD je statický, oprav ho ručne')
 
 # Verzia musí zodpovedať OBSAHU css/js. Ak nie, návštevníkom sa k novému HTML
 # doručí starý štýl alebo staré údaje — a stránka sa im rozsype.
