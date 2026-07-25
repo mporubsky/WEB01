@@ -158,6 +158,11 @@ an education/"did you know" stat block, social proof, and a closing CTA band.
 Details in `references/seo-legal-perf.md`. The must-haves:
 - Localised `<title>`/`meta description` per page; `sitemap.xml`; `robots.txt`;
   LocalBusiness JSON-LD on the homepage; canonical URLs; Open Graph + Twitter.
+  The JSON-LD block is **static** — `main.js` does not fill it from `config.js`,
+  so its `telephone`/`email`/`address` must be edited by hand whenever those
+  change, or Google reads a stale contact. `audit_html.py` WARNs on the mismatch
+  (pitfall 29). Do **not** put a fabricated `aggregateRating` in it — show the
+  real rating in the visible page and link it to the Google profile instead.
 - **GDPR cookie consent** bar; analytics (GA4/GTM) load **only after consent**
   (already implemented in `main.js`).
 - Performance: `preload` CSS + hero image, `fetchpriority="high"` on the LCP
@@ -189,9 +194,11 @@ node   scripts/verify_site.js   --root .     # beh: chyby JS, assety, mobilné m
 
 Then do the two passes no script can do:
 
-- **Trace every number** on the site back to the brief or to something the owner
-  confirmed — installation counts, years, ratings, response times. Vague in the
-  brief ⇒ vague on the site.
+- **Trace every number, brand and claim** on the site back to the brief or to
+  something the owner confirmed — installation counts, years, ratings, response
+  times, *and* product brands/models/suppliers and performance claims. Vague in
+  the brief ⇒ vague on the site; not in the brief ⇒ generic, not invented
+  (pitfalls 27–28).
 - **Read the pages as a customer.** Any sentence that addresses the *owner*
   ("fill this in", "sample template", "see README") is a bug; owner instructions
   belong only in `README.md`.
@@ -230,6 +237,15 @@ Then do the two passes no script can do:
   If the brief says "hundreds", the site says "hundreds" — turning that into
   "500+" because it reads better is fabrication, and it's the failure mode you
   are most likely to commit without noticing.
+- **Product specifics are facts too — don't invent them.** Brands, model/series
+  names, named suppliers ("Somfy motors", "rad ISOLINE", "lamela Z-90"), material
+  specs, lifespans and performance claims are exactly what an LLM confabulates
+  convincingly. Name a brand only if the owner did; otherwise describe generically
+  ("motorické ovládanie", "profil v tvare Z / C"). Keep benefit claims to
+  defensible "up to" figures and don't assert product physics you don't know —
+  an exterior blind's job is summer solar gain, *not* winter heating savings; most
+  shading lasts "dlhé roky", not "desiatky rokov". Cut a claim rather than guess.
+  (Pitfalls 27–28.)
 - **Nothing owner-facing on a public page.** "Fill in the prices", "sample
   template", "see README", `od XX €` — all of it belongs in `README.md`. When a
   value is unknown, show the customer a neutral phrase ("Na vyžiadanie"), never
@@ -238,7 +254,10 @@ Then do the two passes no script can do:
   the site buildless so the owner can host and edit it anywhere.
 - **Honest imagery** — never lift other people's photos (e.g. reviewers' photos
   from Google) onto the site; use the client's own or clearly-branded
-  placeholders.
+  placeholders. **Caption each photo for what it actually shows** — open it and
+  identify the product before you label it or assign a gallery category; look-alike
+  categories (exterior blind shot from inside vs. interior blind) are mislabelled
+  easily, and a photo reused in two places must be right in both. (Pitfall 26.)
 - **Client's language everywhere** the owner or their visitors will read.
 
 ## Reference files (load as needed)
