@@ -150,6 +150,23 @@ for p in pages:
         if "?v=" not in m.group(1):
             add("WARN", p, f"bez cache-busting verzie (?v=): {m.group(1)}")
 
+# Verzia musí zodpovedať OBSAHU css/js. Ak nie, návštevníkom sa k novému HTML
+# doručí starý štýl alebo staré údaje — a stránka sa im rozsype.
+import hashlib
+_assets = sorted(glob.glob("css/*.css") + glob.glob("js/*.js"))
+if _assets:
+    _h = hashlib.sha256()
+    for f in _assets:
+        _h.update(f.encode()); _h.update(open(f, "rb").read())
+    _ocakavana = _h.hexdigest()[:8]
+    _vhtml = set()
+    for p in pages:
+        _vhtml |= set(re.findall(r'(?:css|js)/[^"?]+\?v=([^"]*)', open(p, encoding="utf-8").read()))
+    if _vhtml and _vhtml != {_ocakavana}:
+        add("ERROR", "(všetky stránky)",
+            f"verzia ?v= nezodpovedá obsahu css/js (v HTML: {', '.join(sorted(_vhtml))}, "
+            f"malo by byť {_ocakavana}) – spusti scripts/bump_assets_version.py")
+
 print("=" * 72)
 for sev in ("ERROR", "WARN"):
     lst = issues[sev]

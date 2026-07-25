@@ -181,6 +181,7 @@ already passed it and looked perfect in screenshots. Run all three, and fix what
 they report:
 
 ```
+python scripts/bump_assets_version.py        # ?v= musí sedieť s obsahom css/js
 python scripts/audit_html.py    --root .     # zdrojový kód: odkazy, kotvy, data-mh, SEO, zástupné texty
 node   scripts/audit_browser.js --root .     # vykreslené: pretečenie, kontrast, dotykové plochy
 node   scripts/verify_site.js   --root .     # beh: chyby JS, assety, mobilné menu
@@ -202,10 +203,13 @@ Then do the two passes no script can do:
   FTP), plus a pre-launch checklist.
 - Add `.nojekyll` (GitHub Pages), a `netlify.toml` (headers + 404 + caching),
   `site.webmanifest`, `.gitignore`.
-- **Cache-bust every local CSS/JS reference** — `css/styles.css?v=20260725`,
-  `js/config.js?v=20260725` — and tell the owner in the README to bump the date
-  after edits. Without this the owner edits `config.js`, sees the old phone
-  number for hours, and reports the site as broken (pitfall 14).
+- **Cache-bust every local CSS/JS reference.** Run
+  `python scripts/bump_assets_version.py` — it sets `?v=` to a hash of the CSS/JS
+  contents, so the version changes exactly when the files do. Run it **before
+  every push that touched `css/` or `js/`**; a date you have to remember to bump
+  is a rule you will break (pitfall 14 — and it was broken again *after* being
+  written down, which is why this is a script now). `audit_html.py` fails the
+  build when the version no longer matches the content.
 - Commit and push. If the client pushes their own commits (photo uploads etc.),
   `git fetch` + `git rebase` onto their work rather than clobbering it.
 - Hand over a short list of **what only the owner can supply** (real phone,
@@ -269,6 +273,8 @@ Build:
 - `scripts/render_raster.js` — SVG → PNG (OG 1200×630 + favicons) via Chromium.
 - `scripts/optimize_photos.py` — EXIF-fix, strip, resize, recompress, rename.
 - `scripts/to_webp.py` — WebP siblings + idempotent `<picture>` wrapping (−35 %).
+- `scripts/bump_assets_version.py` — sets `?v=` from a hash of css/js content
+  (`--check` only reports). Run before any push touching `css/` or `js/`.
 
 Check (all three before delivery):
 - `scripts/verify_site.js` — runtime: JS errors, broken assets, mobile menu, screenshots.
