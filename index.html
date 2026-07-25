@@ -29,7 +29,7 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="css/styles.css?v=20260725" as="style">
-  <link rel="preload" href="assets/img/hero.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="assets/img/hero-foto.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="css/styles.css?v=20260725">
 
   <!-- Štruktúrované dáta pre lokálne SEO (LocalBusiness) -->
@@ -99,6 +99,12 @@
   <main id="obsah" tabindex="-1">
     <!-- ======================= HERO ======================= -->
     <section class="hero">
+      <div class="hero__bg" aria-hidden="true">
+        <picture>
+          <source srcset="assets/img/hero-foto.webp" type="image/webp">
+          <img decoding="async" fetchpriority="high" src="assets/img/hero-foto.jpg" width="1920" height="1267" alt="">
+        </picture>
+      </div>
       <div class="container">
         <div class="hero-grid">
           <div class="hero__content" data-reveal>
@@ -115,8 +121,7 @@
               <span class="hero__trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Odpoveď do 24 hodín</span>
             </div>
           </div>
-          <div class="hero__media" data-reveal data-reveal-delay="1">
-            <img decoding="async" fetchpriority="high" src="assets/img/hero.svg" width="900" height="720" alt="Rodinný dom s namontovanými exteriérovými žalúziami">
+          <div class="hero__aside" data-reveal data-reveal-delay="1">
             <a class="hero__badge" href="https://www.google.com/maps?cid=14620963035425995864" data-mh-href="social.googleReviews" target="_blank" rel="noopener" aria-label="Hodnotenie 4,9 z 5 na Google – čítať recenzie">
               <span class="stars" aria-hidden="true">★★★★★</span>
               <span><span data-mh="reviews.rating">4,9</span> / 5<small>Hodnotenia na Google</small></span>
