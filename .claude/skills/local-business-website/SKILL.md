@@ -87,6 +87,12 @@ assets/engine/favicon.svg→ assets/favicon.svg (redraw for the brand)
 Track these with your todo tool; they run roughly in order but iterate freely.
 
 ### 1. Intake — turn the brief into a spec
+`references/brief-template.md` is the intake questionnaire this pipeline wants.
+Hand it to a client who hasn't written a brief yet; when a brief already exists,
+read it **against** that template and note which fields are missing — those gaps
+are what causes rework later. Ask for the blocking ones (phone, e-mail, premises
+address, legal name + ID, form delivery) before building, not after.
+
 - If the brief is a PDF/DOCX, extract it (use the `pdf` / `docx` skills). If
   `pdftoppm`/pypdf fail on `_cffi_backend`, run `pip install --force-reinstall cffi`.
 - Pull out and write down: legal + short business name, domain, ID numbers,
@@ -232,6 +238,8 @@ Then do the two passes no script can do:
 - **Client's language everywhere** the owner or their visitors will read.
 
 ## Reference files (load as needed)
+- `references/brief-template.md` — client intake questionnaire; also the checklist
+  to read an existing brief against, to spot what it doesn't say.
 - `references/components.md` — copy-paste HTML/CSS component library + the exact `<head>`.
 - `references/seo-legal-perf.md` — SEO, JSON-LD, GDPR/cookies, performance, deploy files.
 - `references/pitfalls.md` — concrete bugs from real builds and how to avoid them.
