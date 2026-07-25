@@ -1,5 +1,5 @@
 /* =========================================================================
-   M&H žalúzie — Interaktívny dopytový sprievodca (3-krokový wizard)
+   M&H Žalúzie — Interaktívny dopytový sprievodca (3-krokový wizard)
    Krok 1: typ objektu → Krok 2: typ tienenia → Krok 3: mesto + telefón
    Po odoslaní zavolá zdieľané MH.sendLead(...) z main.js.
    ========================================================================= */

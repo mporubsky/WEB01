@@ -1,5 +1,5 @@
 /* =========================================================================
-   M&H žalúzie — Kontaktný dopytový formulár (kontakt.html)
+   M&H Žalúzie — Kontaktný dopytový formulár (kontakt.html)
    Validácia na strane prehliadača + odoslanie cez MH.sendLead(...).
    ========================================================================= */
 (function () {

@@ -1,5 +1,5 @@
 /* =========================================================================
-   M&H žalúzie — Filtre galérie realizácií + „Zobraziť viac" (realizacie.html)
+   M&H Žalúzie — Filtre galérie realizácií + „Zobraziť viac" (realizacie.html)
    Filtruje dlaždice podľa data-category a postupne dávkuje zobrazenie,
    aby sa pri veľkom počte fotiek nenačítalo všetko naraz.
    ========================================================================= */

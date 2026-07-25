@@ -1,6 +1,6 @@
-# M&H žalúzie — webová stránka
+# M&H Žalúzie — webová stránka
 
-Kompletná, pripravená na zverejnenie webová stránka pre **M&H žalúzie s. r. o.**
+Kompletná, pripravená na zverejnenie webová stránka pre **M&H Žalúzie s. r. o.**
 (doména `mh-zaluzie.sk`). Postavená ako **statický web** — žiadne inštalácie,
 žiadny build proces, žiadna databáza. Funguje na akomkoľvek hostingu a dá sa
 jednoducho a prehľadne upravovať.

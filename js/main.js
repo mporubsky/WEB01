@@ -1,5 +1,5 @@
 /* =========================================================================
-   M&H žalúzie — Spoločná logika webu (main.js)
+   M&H Žalúzie — Spoločná logika webu (main.js)
    - Prepis firemných údajov z config.js do stránky (data-mh atribúty)
    - Mobilná navigácia
    - Tieň hlavičky pri skrolovaní

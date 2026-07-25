@@ -1,5 +1,5 @@
 /* =========================================================================
-   M&H žalúzie — CENTRÁLNA KONFIGURÁCIA
+   M&H Žalúzie — CENTRÁLNA KONFIGURÁCIA
    -------------------------------------------------------------------------
    Toto je JEDINÝ súbor, ktorý potrebujete upraviť pri bežných zmenách:
    telefón, e-mail, otváracie hodiny, doručovanie formulárov, mapa,
@@ -15,13 +15,13 @@ window.MH_CONFIG = {
 
   /* ---- Firemné údaje ---------------------------------------------------- */
   business: {
-    name:      "M&H žalúzie s. r. o.",
-    shortName: "M&H žalúzie",
+    name:      "M&H Žalúzie s. r. o.",
+    shortName: "M&H Žalúzie",
     domain:    "mh-zaluzie.sk",
     url:       "https://mh-zaluzie.sk",
     ico:       "52838323",
-    // dic:    "",                       // (voliteľné) DIČ
-    // icDph:  "",                       // (voliteľné) IČ DPH
+    dic:       "2121233136",             // DIČ
+    icDph:     "SK2121233136",           // IČ DPH
 
     email:     "info@mh-zaluzie.sk",
 
@@ -29,11 +29,20 @@ window.MH_CONFIG = {
     phone:     "+421 9XX XXX XXX",       // ako sa zobrazí návštevníkovi
     phoneHref: "+4219XXXXXXXX",          // formát pre odkaz tel: (bez medzier)
 
+    // Sídlo firmy (registrové / fakturačné údaje)
     address: {
-      street: "Budatínska 3228/51",
-      zip:    "851 06",
+      street: "Pri strelnici 1",
+      zip:    "821 04",
+      city:   "Bratislava – Ružinov",
+      full:   "Pri strelnici 1, 821 04 Bratislava – mestská časť Ružinov"
+    },
+
+    // Predajňa / showroom (kde vás zákazníci nájdu – zhoduje sa s mapou)
+    showroom: {
+      street: "Gustáva Mallého 2",
+      zip:    "851 01",
       city:   "Bratislava – Petržalka",
-      full:   "Budatínska 3228/51, 851 06 Bratislava – mestská časť Petržalka"
+      full:   "Gustáva Mallého 2, 851 01 Bratislava – Petržalka"
     },
 
     hoursShort: "Po – Pi: 08:00 – 17:00",
