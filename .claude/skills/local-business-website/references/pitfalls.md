@@ -93,6 +93,11 @@ as well as the page.
 **Fix:** content shown once lives in the HTML (SEO-friendly, no-JS visible).
 Only cross-cutting data (phone, email, hours, IDs, analytics, map, rating) lives
 in `config.js`.
+**Exception — values the owner must fill in later** (prices are the usual case):
+bind them with `data-mh` **and** leave a sane public fallback as the HTML text:
+`<td data-mh="pricing.blinds">Na vyžiadanie</td>`. `main.js` skips empty config
+values, so the fallback stays visible until the owner fills the number in one
+place. That is one source of truth per value plus a safe default — not drift.
 
 ## 13. Duplicated header/footer drift
 **Symptom:** header/footer differ subtly between pages after manual edits.
@@ -100,3 +105,127 @@ in `config.js`.
 **Fix:** when changing shared chrome, edit **all** pages in one scripted pass and
 re-run `verify_site.js`. Accept the duplication as the price of no-build
 robustness; keep the blocks byte-identical.
+
+---
+
+# Part 2 — found by auditing a finished, already-"done" site
+
+Everything below shipped on a site that had passed `verify_site.js` and looked
+perfect in screenshots. They are the reason phase 8 (final audit) exists.
+
+## 14. Client still sees old data after you pushed the fix
+**Symptom:** the owner sends a screenshot where the layout is your **new** one
+but the phone/address/company name is the **old** value. Looks impossible.
+**Cause:** the browser cached `js/config.js`. HTML revalidated, the JS did not —
+so new markup got filled with stale data. Hosts serve JS/CSS with long
+`max-age`, and this bites hardest right after a data change.
+**Fix:** version every local CSS/JS reference —
+`<script src="js/config.js?v=20260725">` — and bump the number when you edit
+them. Document the bump in the README. Don't tell the client "clear your cache"
+as the solution; make it impossible instead.
+
+## 15. Accent text is invisible on a dark hero
+**Symptom:** the small "eyebrow" label above the H1 is unreadable (contrast
+1.2:1); nobody notices because everyone reads the H1.
+**Cause:** `.eyebrow` uses the **dark** accent shade (designed for white
+sections), but `.hero` / `.page-hero` have a dark background. Only
+`.section--dark` had the light-shade override.
+**Fix:** list every dark container in the override:
+`.section--dark .eyebrow, .hero .eyebrow, .page-hero .eyebrow, .edu .eyebrow
+{ color: var(--c-accent-300); }`. Rule of thumb: after re-theming, check every
+token used on **both** light and dark backgrounds.
+
+## 16. The CTA button in the mobile menu has dark, unreadable text
+**Symptom:** in the opened mobile menu the primary button shows dark text on the
+accent background (1.6:1). Correct on desktop.
+**Cause:** CSS specificity. `.main-nav a { color: var(--c-dark) }` (0,1,1) beats
+`.btn--primary { color:#fff }` (0,1,0), so the nav wins for a button that is
+also a nav link.
+**Fix:** re-assert the button inside the nav:
+`.main-nav a.btn--primary, .main-nav a.btn--primary:hover { color:#fff; background:var(--c-accent); border-bottom:none; }`
+Lesson: whenever a component is nested in a container that styles the same
+element type, check the cascade — screenshots of the *closed* menu hide this.
+
+## 17. Page scrolls sideways on a phone because of one button
+**Symptom:** a page can be dragged horizontally on a 390 px viewport.
+**Cause:** `.btn { white-space: nowrap }` plus a long label and large padding →
+the button is wider than the viewport and cannot wrap.
+**Fix:** `.btn { max-width:100% }` and, under ~560 px, `white-space: normal` with
+smaller `--btn--lg` padding. When hunting overflow, **ignore elements inside
+`overflow-x:auto` containers** (a wide table in a scroller is correct) — the
+bundled `audit_browser.js` does this and names the real culprit.
+
+## 18. Internal notes and placeholders shipped to the public
+**Symptom:** visitors read "prices are placeholders — see `README.md`" on the
+pricing page and "this document is a sample template" on the privacy page; the
+price column literally says `od XX €`.
+**Cause:** scaffolding text written for the owner was never removed, and the
+brief's own "placeholder structure" was copied verbatim into a live page.
+**Fix:** never address the owner in page copy — owner instructions belong in
+`README.md` only. For values that are genuinely unknown, show a neutral public
+phrase ("Na vyžiadanie" / "On request"), never `XX`. `audit_html.py` fails the
+build on `XX €`, `TODO`, `lorem`, `README.md` and `{{PLACEHOLDER}}` in visible
+text — run it before every delivery.
+
+## 19. A specific number nobody can back up
+**Symptom:** "500+ successful installations" on the About page. The brief said
+"**hundreds** of successful installations".
+**Cause:** a vague claim was "improved" into a precise one because specific
+numbers read better.
+**Fix:** every number on the site must be traceable to the brief or to something
+the owner confirmed — installations, years in business, review counts, response
+times. If the brief is vague, stay vague ("Stovky"). Grep the finished site for
+digits and check each one against the source. This is the same rule as the
+never-fabricate-reviews principle, and it is the easiest one to break by accident.
+
+## 20. Registered office vs. the place customers visit
+**Symptom:** the footer, contact page and JSON-LD all show the company's
+registered address, while the embedded map points somewhere else — and the
+owner says "the address is completely wrong".
+**Cause:** the brief lists one address (the **registered office**, from the
+company register). The place customers actually walk into is often different.
+**Fix:** keep both in config (`business.address` = registered office;
+`business.showroom` = premises). Use the **showroom** in the footer, on the
+contact page and in JSON-LD `address` (it must match the map and the Google
+profile); use the **registered office** for invoicing details and the GDPR
+controller paragraph. Ask which is which — never guess from the brief alone.
+
+## 21. `site.webmanifest` keeps the old brand colour
+**Symptom:** after a re-theme, Android's PWA/tab colour is still the previous
+brand colour.
+**Cause:** `theme_color` in `site.webmanifest` is a second place the colour
+lives; only `<meta name="theme-color">` got updated.
+**Fix:** after any re-theme, grep the whole repo for the old hex values —
+manifest, meta tags, inline SVG assets, OG image source. They must all agree.
+
+## 22. Wrapping images in `<picture>` breaks the layout
+**Symptom:** after adding WebP, gallery tiles collapse or images lose their
+aspect ratio.
+**Cause:** `<picture>` is a real inline box between the container and the
+`<img>`, so rules like `.tile img { height:100% }` now resolve against the
+picture, not the tile.
+**Fix:** `picture { display: contents; }` — the wrapper stops generating a box
+and every existing selector keeps working. (In the bundled CSS.) Also make the
+wrapping script **idempotent**: a lookbehind for `<picture>` is not enough
+because `<source>` sits between them — test "is this position already inside a
+picture element" instead, or a second run will double-wrap every image.
+
+## 23. Tap targets smaller than 24 px
+**Symptom:** footer and breadcrumb links are hard to hit on a phone (15–17 px tall).
+**Cause:** they are bare inline links with no padding.
+**Fix:** `display:inline-flex; align-items:center; min-height:24px` on footer,
+breadcrumb and contact links (WCAG 2.5.8). **Do not "fix" links inside a
+sentence** — the standard explicitly exempts those, and padding them wrecks the
+line spacing.
+
+## 24. A contrast audit that cries wolf
+**Symptom:** the checker reports dozens of failures for white text on gradients,
+hero overlays and photo captions — all of them fine — and the one real failure
+drowns in the noise.
+**Cause:** naively walking up for `background-color` returns white when the real
+background is a `background-image` (gradient or photo).
+**Fix:** while walking the ancestors, note whether any of them sets a
+`background-image`. If so, don't report a failure — list the element separately
+for a visual check against the screenshots. Report hard failures only for solid
+backgrounds, and skip anything inside `aria-hidden="true"` (decorative stars,
+icons) because the standard doesn't apply to it.

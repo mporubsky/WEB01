@@ -1,5 +1,5 @@
 /* =========================================================================
-   M&H žalúzie — Hlavný štýlový súbor (design systém)
+   {{BUSINESS_NAME}} — Hlavný štýlový súbor (design systém)
    -------------------------------------------------------------------------
    Štruktúra:
      1.  Dizajnové premenné (farby, typografia, rozostupy)  ← TU meňte značku
@@ -31,8 +31,13 @@
   --c-dark-900:    #1f2b38;
   --c-dark-800:    #24313f;
   --c-dark-700:    #34495e;
-  --c-accent:      #E67E22;   /* teplá oranžová (akcent) */
-  --c-accent-600:  #d35400;
+  /* POZOR na kontrast: --c-accent je dekoratívny (pruhy, ikony, focus, vzorky).
+     Všade, kde ide o TEXT na bielej alebo o BIELY text na akcente, používaj
+     --c-accent-600. Biely text na #E67E22 má len 2,85:1 (norma žiada 4,5:1).
+     Po prefarbení značky over kontrast: node scripts/audit_browser.js */
+  --c-accent:      #E67E22;   /* teplá oranžová – dekoratívne plochy */
+  --c-accent-600:  #A8500C;   /* text na bielej + pozadie tlačidiel (5,5:1) */
+  --c-accent-700:  #8f4409;   /* hover tlačidiel (7,0:1) */
   --c-accent-300:  #f0a668;
   --c-accent-100:  #fdf1e6;
   --c-white:       #ffffff;
@@ -47,6 +52,7 @@
   --c-border-dark: #3d5064;
   --c-star:        #f5b301;
   --c-success:     #1e9e6a;
+  --c-success-700: #147a51;   /* tmavší odtieň pre text na bielom (WCAG AA) */
   --c-success-bg:  #e7f7ef;
   --c-error:       #d64545;
 
@@ -143,7 +149,12 @@ p:last-child { margin-bottom: 0; }
   text-transform: uppercase; color: var(--c-accent-600);
 }
 .eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--c-accent); border-radius: 2px; }
-.section--dark .eyebrow { color: var(--c-accent-300); }
+/* Na tmavom podklade (hero, page-hero, tmavé sekcie) svetlý odtieň akcentu –
+   tmavý akcent by na tmavom pozadí nebol čitateľný (kontrast ~1,2). */
+.section--dark .eyebrow,
+.hero .eyebrow,
+.page-hero .eyebrow,
+.edu .eyebrow { color: var(--c-accent-300); }
 
 .section-head { max-width: 720px; margin-bottom: 2.5rem; }
 .section-head.center { margin-inline: auto; text-align: center; }
@@ -168,14 +179,23 @@ p:last-child { margin-bottom: 0; }
   display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
   padding: .85rem 1.5rem; border-radius: 999px; font-weight: 700; font-size: var(--fs-400);
   line-height: 1.1; text-align: center; cursor: pointer; white-space: nowrap;
+  max-width: 100%;
   transition: transform .12s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
   border: 2px solid transparent;
 }
+/* Na úzkych displejoch nechá dlhý text tlačidla zalomiť, aby nepretekal von. */
+@media (max-width: 560px) {
+  .btn { white-space: normal; }
+  .btn--lg { padding: .95rem 1.4rem; font-size: var(--fs-400); }
+}
 .btn svg { width: 1.15em; height: 1.15em; flex: none; }
+
+/* <picture> je len obal pre WebP/JPEG – nesmie ovplyvniť rozloženie obrázka */
+picture { display: contents; }
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0); }
-.btn--primary { background: var(--c-accent); color: #fff; box-shadow: 0 8px 20px rgba(230,126,34,.28); }
-.btn--primary:hover { background: var(--c-accent-600); color: #fff; box-shadow: 0 12px 26px rgba(230,126,34,.36); }
+.btn--primary { background: var(--c-accent-600); color: #fff; box-shadow: 0 8px 20px rgba(168,80,12,.28); }
+.btn--primary:hover { background: var(--c-accent-700); color: #fff; box-shadow: 0 12px 26px rgba(168,80,12,.36); }
 .btn--secondary { background: transparent; color: var(--c-dark); border-color: var(--c-dark); }
 .btn--secondary:hover { background: var(--c-dark); color: #fff; }
 .btn--ghost { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.5); }
@@ -211,6 +231,7 @@ p:last-child { margin-bottom: 0; }
 .brand__text { display: flex; flex-direction: column; line-height: 1.05; }
 .brand__name { font-size: 1.18rem; letter-spacing: -.01em; }
 .brand__name b { color: var(--c-accent); }
+.brand__word { height: 20px; width: auto; display: block; }   /* obrázkové logo (SVG) */
 .brand__tag { font-size: .68rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--c-muted); }
 
 .main-nav { display: flex; align-items: center; gap: .35rem; }
@@ -221,6 +242,11 @@ p:last-child { margin-bottom: 0; }
 }
 .main-nav a:hover { background: var(--c-bg-tint); color: var(--c-dark); }
 .main-nav a[aria-current="page"] { color: var(--c-accent-600); }
+/* CTA v menu si musí ponechať vlastné farby – `.main-nav a` je špecifickejšie
+   ako `.btn--primary`, inak by tlačidlo malo tmavý text na akcentovom pozadí. */
+.main-nav a.btn--primary,
+.main-nav a.btn--primary:hover { color: #fff; background: var(--c-accent-600); border-bottom: none; }
+.main-nav a.btn--primary:hover { background: var(--c-accent-700); }
 .main-nav a[aria-current="page"]::after {
   content: ""; display: block; height: 2px; background: var(--c-accent); border-radius: 2px; margin-top: 2px;
 }
@@ -436,7 +462,7 @@ p:last-child { margin-bottom: 0; }
 .price-table tbody tr:hover { background: var(--c-bg-alt); }
 .price-table .cat { font-weight: 700; color: var(--c-dark); }
 .price-table .price { font-weight: 800; color: var(--c-accent-600); white-space: nowrap; }
-.price-table .price.free { color: var(--c-success); }
+.price-table .price.free { color: var(--c-success-700); }
 .price-table tbody tr:last-child td { border-bottom: none; }
 
 /* Process steps (Ako pracujeme) */
@@ -547,6 +573,7 @@ p:last-child { margin-bottom: 0; }
 .info-item__ic svg { width: 22px; height: 22px; }
 .info-item b { color: var(--c-dark); display: block; font-size: .95rem; }
 .info-item span, .info-item a { color: var(--c-muted); font-size: var(--fs-300); }
+.info-item a { display: inline-flex; align-items: center; min-height: 24px; }
 .info-item a:hover { color: var(--c-accent-600); }
 .map-embed { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--c-border); }
 .map-embed iframe { width: 100%; height: 100%; min-height: 340px; border: 0; display: block; }
@@ -572,11 +599,14 @@ p:last-child { margin-bottom: 0; }
 .site-footer h4 { color: #fff; font-size: .95rem; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 1rem; }
 .site-footer a { color: #b7c4d1; }
 .site-footer a:hover { color: var(--c-accent-300); }
-.footer-links { list-style: none; padding: 0; display: grid; gap: .55rem; font-size: var(--fs-300); }
+.footer-links { list-style: none; padding: 0; display: grid; gap: .15rem; font-size: var(--fs-300); }
+/* Dostatočne veľká dotyková plocha odkazov (WCAG 2.5.8 – min. 24 px) */
+.footer-links a { display: inline-flex; align-items: center; min-height: 24px; padding: .2rem 0; }
 .footer-about .brand { color: #fff; margin-bottom: 1rem; }
 .footer-about .brand__name { color: #fff; }
 .footer-about p { font-size: var(--fs-300); color: #94a5b6; }
 .footer-contact { font-size: var(--fs-300); display: grid; gap: .6rem; }
+.footer-contact a { display: inline-flex; align-items: center; min-height: 24px; }
 .footer-contact div { display: flex; gap: .55rem; align-items: flex-start; }
 .footer-contact svg { width: 18px; height: 18px; color: var(--c-accent-300); flex: none; margin-top: 3px; }
 .footer-social { display: flex; gap: .6rem; margin-top: 1rem; }
@@ -585,7 +615,7 @@ p:last-child { margin-bottom: 0; }
 .footer-social svg { width: 20px; height: 20px; }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); margin-top: 2.5rem; padding-block: 1.4rem; font-size: var(--fs-200); color: #8496a8; }
 .footer-bottom .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1.5rem; }
-.footer-bottom a { color: #a9b8c7; }
+.footer-bottom a { color: #a9b8c7; display: inline-flex; align-items: center; min-height: 24px; }
 
 /* 19. COOKIE LIŠTA + MOBILNÁ CTA LIŠTA =============================== */
 .cookie-bar {
@@ -621,7 +651,7 @@ p:last-child { margin-bottom: 0; }
 .page-hero h1 { color: #fff; }
 .page-hero p { color: #c4d1de; max-width: 640px; margin-top: .6rem; font-size: var(--fs-500); }
 .breadcrumb { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; font-size: var(--fs-200); color: #9fb1c2; margin-bottom: .8rem; }
-.breadcrumb a { color: #c4d1de; }
+.breadcrumb a { color: #c4d1de; display: inline-flex; align-items: center; min-height: 24px; }
 .breadcrumb li:not(:last-child)::after { content: "›"; margin-left: .4rem; color: #6f8296; }
 
 /* Prose (legal pages, about) */

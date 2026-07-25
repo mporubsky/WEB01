@@ -238,6 +238,11 @@ picture { display: contents; }
 }
 .main-nav a:hover { background: var(--c-bg-tint); color: var(--c-dark); }
 .main-nav a[aria-current="page"] { color: var(--c-accent-600); }
+/* CTA v menu si musí ponechať vlastné farby – `.main-nav a` je špecifickejšie
+   ako `.btn--primary`, inak by tlačidlo malo tmavý text na akcentovom pozadí. */
+.main-nav a.btn--primary,
+.main-nav a.btn--primary:hover { color: #fff; background: var(--c-accent); border-bottom: none; }
+.main-nav a.btn--primary:hover { background: var(--c-accent-600); }
 .main-nav a[aria-current="page"]::after {
   content: ""; display: block; height: 2px; background: var(--c-accent); border-radius: 2px; margin-top: 2px;
 }
@@ -564,6 +569,7 @@ picture { display: contents; }
 .info-item__ic svg { width: 22px; height: 22px; }
 .info-item b { color: var(--c-dark); display: block; font-size: .95rem; }
 .info-item span, .info-item a { color: var(--c-muted); font-size: var(--fs-300); }
+.info-item a { display: inline-flex; align-items: center; min-height: 24px; }
 .info-item a:hover { color: var(--c-accent-600); }
 .map-embed { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--c-border); }
 .map-embed iframe { width: 100%; height: 100%; min-height: 340px; border: 0; display: block; }

@@ -52,9 +52,22 @@ file, `js/config.js`. `main.js` binds it into the HTML through attributes:
 - `data-mh-href="social.googleReviews"` → sets href from config
 - `data-mh-hours`, `data-mh-coverage`, `data-mh-map`, `data-mh-social` → rendered lists/blocks
 
-Page-specific content (product copy, prices, RAL/colour swatches, gallery items)
-lives directly in the HTML where it's shown once — **one source of truth**,
+Page-specific content (product copy, RAL/colour swatches, gallery items) lives
+directly in the HTML where it's shown once — **one source of truth**,
 SEO-friendly, visible without JS. Don't duplicate content into config.
+
+Two details that repeatedly bite:
+
+- **Registered office ≠ the place customers visit.** Keep both:
+  `business.address` (register/invoicing/GDPR) and `business.showroom`
+  (premises). The footer, contact page and JSON-LD `address` must use the
+  **showroom** so they match the map and the Google profile; invoicing details
+  and the GDPR controller paragraph use the **registered office**. Ask the owner
+  which is which — the brief usually lists only the registered one.
+- **Values the owner still owes you** (prices above all): bind them *and* leave a
+  public fallback in the HTML — `<td data-mh="pricing.blinds">Na vyžiadanie</td>`.
+  `main.js` ignores empty config values, so the site is publishable today and
+  becomes exact the moment the owner types a number. Never ship `od XX €`.
 
 The bundled `assets/engine/` files are the proven implementation of all of the
 above. **Start every project by copying them in** — don't rewrite them:
@@ -90,6 +103,11 @@ Track these with your todo tool; they run roughly in order but iterate freely.
   `--c-accent`, `--c-white`, plus derived shades). Re-theming the tokens
   changes the whole site. This is where "different designs/themes" happens —
   colours, radius, font stack, shadows, hero treatment.
+- The brand's vivid accent is a **decorative** colour. Text on white and button
+  backgrounds carrying white labels use the darker `--c-accent-600`; accent text
+  on dark sections uses the lighter `--c-accent-300`. See the token table in
+  `references/components.md` — getting this wrong is the most common
+  accessibility failure, and re-themed palettes fail it silently.
 - Fill `js/config.js` from the brief (leave `⚠ DOPLNIŤ` where the client still
   owes real data — e.g. the real phone number).
 
@@ -117,6 +135,18 @@ an education/"did you know" stat block, social proof, and a closing CTA band.
   used generic names, pass `--rename map.json` to give SEO-friendly filenames.
   Wire photos in with an `onerror` fallback so nothing ever looks broken before
   upload — see `references/components.md`.
+- Once photos are final, add WebP: `python scripts/to_webp.py --dir assets/img
+  --wrap-html .` writes `.webp` siblings and wraps each `<img>` in `<picture>`
+  (typically −35 % bytes; old browsers still get the JPEG). It is idempotent.
+- **A supplied logo is usually a low-res JPEG/PNG.** Don't paste it into the
+  header — vectorise it: trace with `vtracer` (`--mode polygon --color_precision 8`),
+  then hand-clean the SVG and sample the real brand hex values out of the
+  original to seed the `:root` tokens. Produce `logo-mark.svg` (icon) plus
+  **dark and light wordmarks** (`.brand__word`) — the footer is dark, the header
+  is light, and one wordmark cannot serve both.
+- **Sorting a pile of client photos:** build a contact sheet with Pillow and
+  *look* at it, then categorise, spot duplicates of photos already on the site,
+  and write a rename map. Ask before deleting anything the owner uploaded.
 
 ### 5. SEO, legal, performance, accessibility
 Details in `references/seo-legal-perf.md`. The must-haves:
@@ -138,15 +168,42 @@ basics, or a non-working mobile menu — then screenshots every page for a visua
 pass. **Look at the screenshots.** Read `references/pitfalls.md` for the
 specific bugs this catches (they are subtle and easy to reintroduce).
 
-### 7. Deliver
+### 7. Final audit — assume the site is still wrong
+`verify_site.js` passing means the site *runs*. It does not mean it is correct.
+Every bug in part 2 of `references/pitfalls.md` was found on a site that had
+already passed it and looked perfect in screenshots. Run all three, and fix what
+they report:
+
+```
+python scripts/audit_html.py    --root .     # zdrojový kód: odkazy, kotvy, data-mh, SEO, zástupné texty
+node   scripts/audit_browser.js --root .     # vykreslené: pretečenie, kontrast, dotykové plochy
+node   scripts/verify_site.js   --root .     # beh: chyby JS, assety, mobilné menu
+```
+
+Then do the two passes no script can do:
+
+- **Trace every number** on the site back to the brief or to something the owner
+  confirmed — installation counts, years, ratings, response times. Vague in the
+  brief ⇒ vague on the site.
+- **Read the pages as a customer.** Any sentence that addresses the *owner*
+  ("fill this in", "sample template", "see README") is a bug; owner instructions
+  belong only in `README.md`.
+
+### 8. Deliver
 - Write a `README.md` **in the client's language** explaining how to edit
   common things (via `config.js`), add photos, set up form delivery
   (Web3Forms), analytics, the map, and how to deploy (Netlify / GitHub Pages /
   FTP), plus a pre-launch checklist.
 - Add `.nojekyll` (GitHub Pages), a `netlify.toml` (headers + 404 + caching),
   `site.webmanifest`, `.gitignore`.
+- **Cache-bust every local CSS/JS reference** — `css/styles.css?v=20260725`,
+  `js/config.js?v=20260725` — and tell the owner in the README to bump the date
+  after edits. Without this the owner edits `config.js`, sees the old phone
+  number for hours, and reports the site as broken (pitfall 14).
 - Commit and push. If the client pushes their own commits (photo uploads etc.),
   `git fetch` + `git rebase` onto their work rather than clobbering it.
+- Hand over a short list of **what only the owner can supply** (real phone,
+  prices, form key, analytics ID) and say plainly which of them block launch.
 
 ## Core principles (these are what make the result trustworthy)
 
@@ -158,6 +215,15 @@ specific bugs this catches (they are subtle and easy to reintroduce).
 - **Real business facts only.** Use exact address/ID/phone from the brief; where
   a real value is still missing, leave a clearly-marked placeholder — never a
   plausible-looking invention.
+- **Every number must be traceable.** Install counts, years in business,
+  percentages, response times: each one comes from the brief or from the owner.
+  If the brief says "hundreds", the site says "hundreds" — turning that into
+  "500+" because it reads better is fabrication, and it's the failure mode you
+  are most likely to commit without noticing.
+- **Nothing owner-facing on a public page.** "Fill in the prices", "sample
+  template", "see README", `od XX €` — all of it belongs in `README.md`. When a
+  value is unknown, show the customer a neutral phrase ("Na vyžiadanie"), never
+  scaffolding.
 - **Config-driven & no-build** — keep cross-cutting data in `config.js`; keep
   the site buildless so the owner can host and edit it anywhere.
 - **Honest imagery** — never lift other people's photos (e.g. reviewers' photos
@@ -183,10 +249,24 @@ globally (all projects): copy into `~/.claude/commands/`. The user can always
 also invoke the skill by name ("use the local-business-website skill").
 
 ## Bundled scripts
+Build:
 - `scripts/gen_placeholder_svgs.py` — branded SVG placeholders (hero, cards, OG).
 - `scripts/render_raster.js` — SVG → PNG (OG 1200×630 + favicons) via Chromium.
 - `scripts/optimize_photos.py` — EXIF-fix, strip, resize, recompress, rename.
-- `scripts/verify_site.js` — browser verification + screenshots (run before delivery).
+- `scripts/to_webp.py` — WebP siblings + idempotent `<picture>` wrapping (−35 %).
+
+Check (all three before delivery):
+- `scripts/verify_site.js` — runtime: JS errors, broken assets, mobile menu, screenshots.
+- `scripts/audit_html.py` — source: links, anchors, duplicate ids, unresolved
+  `data-mh` paths, SEO meta, and **placeholder text leaking to visitors**.
+- `scripts/audit_browser.js` — rendered: horizontal overflow (names the culprit),
+  WCAG contrast, 24 px tap targets, unfilled data.
+
+Each takes `--root .` and `--help`; the audits exit non-zero on real problems, so
+they can gate a delivery. They are deliberately quiet about known non-issues
+(text over gradients, inline links, `aria-hidden` decoration) — a checker that
+cries wolf gets ignored, and then the real bug ships.
 
 Dependencies these assume: `playwright-core` (Chromium at `/opt/pw-browsers`),
-`Pillow`. Install if missing; the scripts print clear errors otherwise.
+`Pillow`, and `vtracer` for logo tracing. Install if missing; the scripts print
+clear errors otherwise.

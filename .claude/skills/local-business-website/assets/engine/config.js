@@ -18,6 +18,8 @@ window.MH_CONFIG = {
     domain:    "{{domain.sk}}",
     url:       "https://{{domain.sk}}",
     ico:       "{{ICO}}",                        // (voliteľné) IČO / reg. číslo
+    dic:       "{{DIC}}",                        // (voliteľné) DIČ
+    icDph:     "{{IC_DPH}}",                     // (voliteľné) IČ DPH
 
     email:     "info@{{domain.sk}}",
 
@@ -25,11 +27,23 @@ window.MH_CONFIG = {
     phone:     "+421 9XX XXX XXX",               // ako sa zobrazí návštevníkovi
     phoneHref: "+4219XXXXXXXX",                   // tel: formát (bez medzier)
 
+    /* SÍDLO = registrové / fakturačné údaje (obchodný register, faktúry, GDPR).
+       Overuj ho v registri, nie podľa Google profilu — často sa líšia. */
     address: {
       street: "{{ULICA A ČÍSLO}}",
       zip:    "{{PSČ}}",
       city:   "{{MESTO}}",
-      full:   "{{CELÁ ADRESA}}"
+      full:   "{{CELÁ ADRESA SÍDLA}}"
+    },
+
+    /* PREVÁDZKA / PREDAJŇA = kam reálne chodia zákazníci. Ak sa líši od sídla,
+       do pätičky, na kontakt a do JSON-LD patrí TOTO (zhoduje sa s mapou).
+       Ak firma prevádzku nemá, celý blok zmaž — web použije `address`. */
+    showroom: {
+      street: "{{ULICA A ČÍSLO}}",
+      zip:    "{{PSČ}}",
+      city:   "{{MESTO}}",
+      full:   "{{CELÁ ADRESA PREVÁDZKY}}"
     },
 
     hoursShort: "Po – Pi: 08:00 – 17:00",
@@ -41,6 +55,20 @@ window.MH_CONFIG = {
     coverage: ["{{Mesto1}}", "{{Mesto2}}", "{{Mesto3}}"],  // oblasti pôsobnosti
     coverageRadiusKm: 50,
     responseTime: "24 hodín"
+  },
+
+  /* ---- Orientačný cenník (stránka s cenníkom) ---------------------------
+     Doplň reálne sumy, napr. "od 149 € / m²". Ak necháš hodnotu prázdnu (""),
+     v tabuľke zostane východiskový text z HTML — nastav ho na neutrálne
+     „Na vyžiadanie". Web sa tak dá zverejniť aj pred určením cien a NIKDY sa
+     návštevníkovi nezobrazí zástupný text typu „od XX €".
+     Kľúče si pomenuj podľa riadkov cenníka daného klienta.
+     ---------------------------------------------------------------------- */
+  pricing: {
+    // Kľúče premenuj podľa riadkov cenníka klienta (exterioroveZaluzie, sieteOkenne…)
+    polozka1: "",
+    polozka2: "",
+    montaz:   "Zameranie ZDARMA"
   },
 
   /* ---- Doručovanie formulárov ------------------------------------------

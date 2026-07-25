@@ -7,6 +7,8 @@ Thumbs.db
 
 # Závislosti / build (pre prípadné budúce rozšírenie)
 node_modules/
+__pycache__/
+*.pyc
 dist/
 .cache/
 

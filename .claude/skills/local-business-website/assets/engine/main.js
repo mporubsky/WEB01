@@ -1,5 +1,5 @@
 /* =========================================================================
-   M&H žalúzie — Spoločná logika webu (main.js)
+   {{BUSINESS_NAME}} — Spoločná logika webu (main.js)
    - Prepis firemných údajov z config.js do stránky (data-mh atribúty)
    - Mobilná navigácia
    - Tieň hlavičky pri skrolovaní
@@ -23,7 +23,9 @@
   function bindData() {
     document.querySelectorAll("[data-mh]").forEach(function (el) {
       var val = get(el.getAttribute("data-mh"));
-      if (val !== undefined) el.textContent = val;
+      // Prázdna hodnota v config.js = ponechá sa východiskový text v HTML
+      // (napr. „Na vyžiadanie" v cenníku, kým nie sú doplnené reálne ceny).
+      if (val !== undefined && val !== "") el.textContent = val;
     });
     // Odkazy typu tel: / mailto: / href
     document.querySelectorAll("[data-mh-tel]").forEach(function (el) {
@@ -70,7 +72,7 @@
       host.classList.add("map-placeholder");
       host.innerHTML =
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>' +
-        "<p><strong>" + (B.address ? B.address.full : "") + "</strong></p>" +
+        "<p><strong>" + ((B.showroom || B.address || {}).full || "") + "</strong></p>" +
         '<a class="btn btn--secondary btn--sm" target="_blank" rel="noopener" href="' +
         (M.directLink || "#") + '">Otvoriť v Google Mapách</a>';
     }

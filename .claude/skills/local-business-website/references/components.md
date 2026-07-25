@@ -51,11 +51,19 @@ hidden reveal-elements and keeps content visible if JS is off (see pitfalls).
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preload" href="css/styles.css" as="style">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preload" href="css/styles.css?v={{YYYYMMDD}}" as="style">
+  <link rel="stylesheet" href="css/styles.css?v={{YYYYMMDD}}">
   <!-- homepage only: <link rel="preload" href="assets/img/hero.svg" as="image"> -->
 </head>
+<!-- before </body> -->
+<script src="js/config.js?v={{YYYYMMDD}}"></script>
+<script src="js/main.js?v={{YYYYMMDD}}"></script>
 ```
+
+The `?v=` on every local CSS/JS reference is **not optional**. Hosts cache JS for
+days, so without it the owner edits `config.js`, keeps seeing the old phone
+number, and reports the site as broken. Bump the date whenever you touch those
+files, and say so in the README.
 
 Use a **system font stack** (in the tokens) — no Google Fonts. It avoids an
 external request, helps PageSpeed, and works offline. Only add a web font if the
@@ -63,7 +71,25 @@ brand truly demands it, and then self-host + `preload` it.
 
 ## 2. Design tokens (edit these to re-theme)
 Top of `styles.css`. This is the single most important lever for "different
-designs". Example (adjust per brand):
+designs".
+
+**The accent needs two shades, and mixing them up is the #1 accessibility bug.**
+A brand's vivid accent is usually fine as a decorative fill but fails as a text
+colour: white on `#E67E22` is only 2.85:1 where AA wants 4.5:1. So:
+
+| token | use for | must satisfy |
+|---|---|---|
+| `--c-accent` | decorative fills — eyebrow bar, focus ring, swatches, icons | no text on it |
+| `--c-accent-600` | accent **text** on white **and** button backgrounds with white labels | ≥ 4.5:1 vs white |
+| `--c-accent-700` | hover state of those buttons | darker still |
+| `--c-accent-300` | accent text **on dark** backgrounds (hero, dark sections) | ≥ 4.5:1 vs `--c-dark` |
+
+Mid-tone greens/ambers (`--c-success`, star gold) have the same problem: keep a
+darker `-700` variant for anything that is text. After re-theming, don't eyeball
+it — run `node scripts/audit_browser.js --root .`, which measures every text
+element at mobile and desktop widths.
+
+Example (adjust per brand):
 ```css
 :root{
   --c-dark:#2C3E50; --c-accent:#E67E22; --c-white:#fff;
@@ -80,13 +106,27 @@ without touching component markup.
 ## 3. Header + navigation
 Logo (also the "home" link — no separate "Home" nav item), links, phone, CTA,
 hamburger. Mark the current page with `aria-current="page"`. Keep `.main-nav a`
-`white-space:nowrap` so items never wrap. The full working header is in the
-built site; key structure:
+`white-space:nowrap` so items never wrap.
+
+Two things to get right: the header logo needs a **dark** wordmark and the
+footer a **light** one (same file name, `-dark` / `-light`); and the in-nav CTA
+must re-assert its own colours (`.main-nav a.btn--primary { color:#fff }`)
+because `.main-nav a` is the more specific selector and otherwise paints the
+button's label dark — invisible on the accent background, and only in the
+*opened* mobile menu, so screenshots miss it.
+
+The full working header is in the built site; key structure:
 ```html
 <body>
   <a class="skip-link" href="#obsah">{{Preskočiť na obsah}}</a>
   <header class="site-header"><div class="container header-inner">
     <a class="brand" href="index.html" aria-label="{{Brand}} – {{domov}}">…logo…</a>
+    <!-- logo: icon + wordmark image; footer uses logo-word-LIGHT.svg instead -->
+    <!-- <img class="brand__mark" src="assets/logo-mark.svg" alt="" width="53" height="42">
+         <span class="brand__text">
+           <img class="brand__word" src="assets/logo-word-dark.svg" alt="{{Brand}}" width="135" height="20">
+           <span class="brand__tag">{{Tagline}}</span>
+         </span> -->
     <nav class="main-nav" id="main-nav" aria-label="{{Hlavná navigácia}}">
       <a href="produkty.html">{{Produkty}}</a> … 
       <a class="btn btn--primary btn--sm header-mobile-cta" href="kontakt.html">{{CTA}}</a>
@@ -130,16 +170,40 @@ column for accessibility.
 on request" swatch use a `conic-gradient` and an overlaid label.
 
 ## 9. Price table
-`.price-table > table` with a `.price-note` disclaimer above it (orange tint).
-Right column `.price` (accent, bold); use `.price.free` for "ZDARMA"/free rows.
-Keep placeholder amounts like `od XX €` when the client hasn't given real prices
-and say so in a footnote — never invent prices.
+`.price-table > table` with a `.price-note` disclaimer above it (accent tint).
+Right column `.price` (accent, bold); `.price.free` for "ZDARMA"/free rows —
+that class must use a **dark** success shade (`--c-success-700`), the mid-tone
+green fails WCAG AA on white.
 
-## 10. Gallery with filters
+Never invent prices — and never ship `od XX €` either; visitors read it as a
+broken page. Bind each cell to config with a neutral public fallback:
+
+```html
+<td class="price" data-mh="pricing.exteriorBlinds">Na vyžiadanie</td>
+<td class="price free" data-mh="pricing.install">Zameranie ZDARMA</td>
+```
+
+`main.js` skips empty config values, so the fallback shows until the owner fills
+`pricing.exteriorBlinds: "od 149 € / m²"` in `config.js`. The site is
+publishable before prices exist, and updating them is a one-line edit.
+
+## 10. Gallery with filters and "load more"
 `.filters[data-gallery-filters]` of `.filter-btn[data-filter="..."]` + a
 `.gallery[data-gallery]` of `.tile[data-category="..."]` figures. `gallery.js`
-(reused) filters by category. Only include filter buttons for categories that
-actually have items.
+(reused) filters by category **and** reveals tiles in batches of `STEP` (9), so a
+30+ photo gallery doesn't dump everything at once. Add the button after the grid
+— `gallery.js` hides it automatically when nothing is left to show:
+
+```html
+<div class="gallery" data-gallery> …figures… </div>
+<div class="text-center mt-2">
+  <button class="btn btn--secondary" data-gallery-more>{{Zobraziť viac}}</button>
+</div>
+```
+
+Only include filter buttons for categories that actually have items, and make
+sure `is-hidden` is `display:none` so hidden tiles cost nothing. Changing the
+filter resets the batch counter.
 
 ## 11. Contact form
 `#contact-form` (powered by `form.js`). Fields typically: name, phone, email,
@@ -160,6 +224,20 @@ looks broken before upload; the real photo appears automatically once added:
 ```
 For gallery/card tiles the container enforces a 4:3 box (`aspect-ratio` +
 `object-fit:cover`), so any photo aspect ratio crops cleanly.
+
+Once the photos are final, `scripts/to_webp.py` wraps each one for WebP delivery.
+The `<img>` (with its `onerror`, sizes and lazy-loading) stays untouched inside:
+
+```html
+<picture>
+  <source srcset="assets/img/realizacia-roleta.webp" type="image/webp">
+  <img decoding="async" loading="lazy" width="800" height="600" … >
+</picture>
+```
+
+This needs `picture { display: contents; }` in the CSS (already in the engine),
+otherwise the wrapper becomes a layout box and `height:100%` rules inside tiles
+resolve against it instead of the tile.
 
 ## 13. Footer + cookie bar + mobile CTA
 - `.site-footer` (dark): brand blurb + `[data-mh-social]`, quick links, and a

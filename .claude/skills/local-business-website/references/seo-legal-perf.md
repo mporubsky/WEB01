@@ -13,6 +13,9 @@
   (`HomeAndConstructionBusiness`, `Dentist`, `Restaurant`, …), name, image, url,
   email, telephone, `address` (PostalAddress), `areaServed`,
   `openingHoursSpecification`, and `makesOffer` for the main services.
+  The `address` must be the place customers can visit (`business.showroom`) and
+  must match the embedded map and the Google Business profile — not the
+  registered office, if the two differ. Google cross-checks them.
 - **Do NOT add `aggregateRating` to JSON-LD** unless you have a real rating AND
   a real review count from the client, and the reviews are shown on-page.
   Self-serving or invented rating markup risks a Google manual action.
@@ -26,9 +29,13 @@
   nothing. Never fire analytics before consent.
 - Ship a **privacy policy page** (data controller, data collected, purpose &
   legal basis, retention, processors, cookies, data-subject rights, supervisory
-  authority). Mark it clearly as a **template to be reviewed by the operator** —
-  you are not their lawyer; don't invent retention periods or processor names as
-  if final.
+  authority). You are not their lawyer: don't invent retention periods or
+  processor names as if final. Tell the owner it needs a legal review **in the
+  README and in your handover message — never in a box on the page itself.**
+  A visitor who reads "this document is a sample template" on the privacy policy
+  loses trust in the whole business (this shipped once; see pitfall 18).
+- The controller paragraph uses the **registered office** (`business.address`)
+  plus IČO/DIČ — not the showroom address.
 - The contact form's GDPR consent checkbox must be **required** and name the
   data controller + link the privacy page.
 
@@ -42,13 +49,27 @@
   self-contained SVG placeholders. Optimise real photos with
   `scripts/optimize_photos.py` (target ≤ ~300 kB, ≤ ~1600 px).
 - Raster the OG image and favicons with `scripts/render_raster.js`.
+- Add **WebP** once photos are final: `scripts/to_webp.py --dir assets/img
+  --wrap-html .` (`<picture>` + JPEG fallback, ~35 % smaller). Requires
+  `picture { display: contents; }` in the CSS.
+- **Cache-bust CSS/JS**: `css/styles.css?v=YYYYMMDD`, `js/config.js?v=YYYYMMDD`,
+  bumped on every edit. Long `max-age` on JS is what makes an owner's data change
+  appear not to work; versioning is the only reliable fix.
 
 ## Accessibility
 - Skip-to-content link (`.skip-link` → `#obsah`), `<main id="obsah" tabindex="-1">`.
 - Keyboard-operable nav (hamburger is a real `<button>` with `aria-expanded`/
   `aria-controls`); visible focus styles; `prefers-reduced-motion` disables the
   reveal animations (handled in the CSS).
-- Colour contrast AA; don't encode meaning in colour alone.
+- Colour contrast AA; don't encode meaning in colour alone. Check tokens that
+  appear on **both** light and dark backgrounds (the accent-coloured "eyebrow"
+  label on a dark hero is the classic miss), and mid-tone greens/ambers used as
+  text on white — those usually need a darker shade.
+- **Tap targets ≥ 24×24 px** (WCAG 2.5.8) for standalone links: footer link
+  lists, breadcrumbs, contact details. Links inside a sentence are exempt —
+  padding those breaks the line spacing.
+- Run `scripts/audit_browser.js`; it measures contrast, overflow and tap targets
+  in a real browser at mobile and desktop widths.
 
 ## Deploy files to include
 - **`.nojekyll`** — empty file; lets GitHub Pages serve `assets/` etc. untouched.
@@ -56,7 +77,9 @@
   (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
   `Permissions-Policy`) and long-cache headers for `/assets/*`.
 - **`site.webmanifest`** — name, theme/background colour, icons (SVG + PNG
-  192/512 maskable).
+  192/512 maskable). Its `theme_color` is a *second* home for the brand colour:
+  after any re-theme, grep the repo for the old hex so the manifest, the
+  `<meta name="theme-color">` tags and the SVG assets can't drift apart.
 - **`.gitignore`** — OS/editor junk, `node_modules/`, build/cache dirs.
 
 ## Deploy targets (put in the README, in the client's language)
