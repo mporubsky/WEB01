@@ -244,13 +244,20 @@ Then do the two passes no script can do:
 - `references/seo-legal-perf.md` — SEO, JSON-LD, GDPR/cookies, performance, deploy files.
 - `references/pitfalls.md` — concrete bugs from real builds and how to avoid them.
 
-## Launcher command (guaranteed invocation)
+## Bundled slash commands
 
 Because "build me a website" is a task the model often just does directly, this
-skill can under-trigger on its own. A bundled slash command forces it:
-`assets/commands/build-web.md` (+ Slovak alias `postav-web.md`). Installed as a
-command, typing `/build-web <brief>` explicitly invokes this skill and passes the
-brief as arguments — 100% reliable, no reliance on auto-triggering.
+skill can under-trigger on its own. Two bundled commands cover both entry points:
+
+- **`assets/commands/build-web.md`** (+ Slovak alias `postav-web.md`) — for when
+  the brief already exists. Typing `/build-web <brief>` invokes this skill
+  explicitly and passes the brief as arguments, with no reliance on
+  auto-triggering.
+- **`assets/commands/PROMPTsablonaweb.md`** — for when it doesn't. It interviews
+  the client through the fields in `references/brief-template.md`, six topic
+  rounds rather than field-by-field, then assembles the finished brief and offers
+  to start the build. Point it at an existing brief and it fills what it can and
+  asks only about the gaps.
 
 To install per project: copy into the repo's `.claude/commands/`. To install
 globally (all projects): copy into `~/.claude/commands/`. The user can always
