@@ -38,7 +38,9 @@ if (args.includes('--help') || args.includes('-h')) {
 }
 const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d; };
 const ROOT = path.resolve(opt('--root', '.'));
-const PLACEHOLDER = opt('--placeholders', 'XX XXX|\\bTODO\\b|\\{\\{');
+// Pozor aj na „x-kové" výplne v e-mailoch a doménach (info@xxxx.sk) – tie
+// vyzerajú ako reálny údaj a prejdú aj cez kontrolu odkazov.
+const PLACEHOLDER = opt('--placeholders', 'XX XXX|[Xx]{3,}|\\bTODO\\b|\\{\\{');
 const CHROME = require('child_process').execSync(
   "ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome 2>/dev/null | head -1").toString().trim();
 

@@ -61,7 +61,12 @@ def cfg_has(path):
 # zástupné texty, ktoré sa NIKDY nesmú dostať k návštevníkovi
 PLACEHOLDER = re.compile(
     r"(od\s+XX\s*€|XX\s*€|\bTODO\b|\blorem ipsum\b|README\.md|"
-    r"vzorová šablóna|zástupn[éý] \(placeholder\)|\{\{[A-Z_]+\}\})", re.I)
+    r"vzorová šablóna|zástupn[éý] \(placeholder\)|\{\{[A-Z_]+\}\}|"
+    # „x-kové" výplne v e-mailoch a doménach (info@xxxx.sk) – tvária sa ako
+    # platný údaj, prejdú kontrolou odkazov aj mailto, ale zákazník ich vidí
+    r"[\w.+-]+@[\w.-]*x{3,}|\bx{3,}\.(?:sk|cz|com|eu)\b|"
+    # zástupné telefónne číslo typu „+421 9XX XXX XXX"
+    r"X{2,}\s+X{3,})", re.I)
 
 pages = sorted(glob.glob("*.html"))
 if not pages:
@@ -149,6 +154,17 @@ for p in pages:
     for m in re.finditer(r'(?:src|href)="((?:js|css)/[^"]+)"', s):
         if "?v=" not in m.group(1):
             add("WARN", p, f"bez cache-busting verzie (?v=): {m.group(1)}")
+
+# Zástupné hodnoty priamo v config.js. Do HTML ich dopĺňa až JS za behu, takže
+# v zdroji stránky ich nevidno — a pritom sú to práve tie údaje (telefón, e-mail),
+# ktoré sa zobrazia na každej stránke a cez ktoré má zákazník firmu kontaktovať.
+if cfg:
+    for _k, _v in re.findall(r'^\s*(\w+):\s*"([^"]*)"', cfg, re.M):
+        if _k in ("web3formsKey", "ga4Id", "gtmId", "customEndpoint"):
+            continue                     # tieto smú byť prázdne / technické
+        if _v and PLACEHOLDER.search(_v):
+            add("ERROR", os.path.basename(a.config),
+                f'zástupná hodnota v config.js: {_k} = "{_v}" – zobrazí sa návštevníkom')
 
 # Verzia musí zodpovedať OBSAHU css/js. Ak nie, návštevníkom sa k novému HTML
 # doručí starý štýl alebo staré údaje — a stránka sa im rozsype.
