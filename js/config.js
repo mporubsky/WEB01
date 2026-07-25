@@ -23,7 +23,7 @@ window.MH_CONFIG = {
     dic:       "2121233136",             // DIČ
     icDph:     "SK2121233136",           // IČ DPH
 
-    email:     "info@mh-zaluzie.sk",
+    email:     "info@xxxx.sk",
 
     // ⚠ DOPLNIŤ reálne telefónne číslo (zobrazované + odkaz tel:)
     phone:     "+421 9XX XXX XXX",       // ako sa zobrazí návštevníkovi
