@@ -229,3 +229,22 @@ background is a `background-image` (gradient or photo).
 for a visual check against the screenshots. Report hard failures only for solid
 backgrounds, and skip anything inside `aria-hidden="true"` (decorative stars,
 icons) because the standard doesn't apply to it.
+
+## 25. A camera watermark on every client photo
+**Symptom:** the client says the site "looks cheap" and can't say why. Bottom-left
+of every photo reads `REDMI NOTE 9 PRO / AI QUAD CAMERA` — a burned-in phone
+watermark. In the gallery the caption gradient half-hides it, so it survives
+review; in a hero it sits right under the headline.
+**Cause:** many phones ship with the watermark enabled by default. Clients send
+photos exactly as the phone saved them.
+**Fix:** measure where it starts instead of guessing — sample the bottom band and
+find the first row of near-white text pixels (it was at 90 % of height, so cropping
+the bottom 12 % cleared it with margin). Then:
+- crop **only** the photos that actually have it — check by eye on a contact sheet
+  of every photo's bottom-left corner; a few are usually clean and don't need it;
+- re-encode the WebP siblings afterwards, or the old watermarked ones keep serving;
+- the crop tightens the framing, which usually *improves* these photos (it removes
+  foreground paving and dirt).
+
+Same sweep applies to date stamps and "Shot on …" overlays. Check the corners of
+client photos before wiring any of them in.

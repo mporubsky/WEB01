@@ -28,6 +28,14 @@ const fs = require('fs'), path = require('path');
 const { chromium } = require('playwright-core');
 
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log('audit_browser.js — audit vykresleného webu (pretečenie, kontrast, dotykové plochy).\n' +
+    '  node audit_browser.js [--root .] [--placeholders \'XX|TODO\']\n' +
+    '  --root         : priečinok s .html súbormi (predvolene aktuálny)\n' +
+    '  --placeholders : regex zástupných textov hľadaných v data-mh prvkoch\n' +
+    'Návratový kód != 0 pri nájdenom probléme.');
+  process.exit(0);
+}
 const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d; };
 const ROOT = path.resolve(opt('--root', '.'));
 const PLACEHOLDER = opt('--placeholders', 'XX XXX|\\bTODO\\b|\\{\\{');

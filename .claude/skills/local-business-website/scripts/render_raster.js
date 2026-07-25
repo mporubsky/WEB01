@@ -28,6 +28,19 @@ const CHROME = process.env.CHROME_PATH ||
 const { chromium } = require('playwright-core');
 const ROOT = process.env.SITE_ROOT || process.cwd();
 
+// Skript nemá prepínače – cesty sú pevné (viď hlavička). Keby ich niekto predsa
+// zadal, radšej to povedz, než potichu vyrenderovať niečo iné, než čakal.
+if (process.argv.length > 2) {
+  const a = process.argv.slice(2);
+  if (a.includes('--help') || a.includes('-h')) {
+    console.log('render_raster.js — bez prepínačov. Vstup: assets/img/og-image.svg a assets/favicon.svg\n' +
+      'Koreň projektu sa dá zmeniť cez SITE_ROOT, cesta k prehliadaču cez CHROME_PATH.');
+    process.exit(0);
+  }
+  console.error('⚠  render_raster.js nepozná prepínače (dostal: ' + a.join(' ') + ').\n' +
+    '   Používa pevné cesty; koreň zmeníš cez SITE_ROOT=<cesta>. Pokračujem s predvolenými.');
+}
+
 async function svgToPng(browser, svgPath, outPath, w, h, transparent) {
   let svg = fs.readFileSync(svgPath, 'utf8').replace(/<svg /, `<svg width="${w}" height="${h}" `);
   const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 1 });

@@ -140,10 +140,39 @@ The full working header is in the built site; key structure:
   <main id="obsah" tabindex="-1"> … </main>
 ```
 
-## 4. Hero
-`.hero` (dark, gradient + accent glow) with `.hero-grid` (content + media),
-`<h1>`, subhead, two CTAs (primary + ghost), trust row, and a media image with
-`fetchpriority="high"`. Optional rating badge linking to Google (§14).
+## 4. Hero — two treatments, pick one
+`.hero` (dark, gradient + accent glow) with `.hero-grid`, `<h1>`, subhead, two
+CTAs (primary + ghost), a trust row and an optional rating badge (§14).
+
+**A — image in a frame** (`.hero__media`): the photo sits beside the text in a
+rounded card. Use when the photo is genuinely good and deserves to be seen whole.
+
+**B — full-bleed photo** (`.hero__bg`): the photo fills the section, a diagonal
+gradient over it carries the text. Use this for **ordinary client phone photos** —
+which is most projects. The overlay hides their weaknesses and the result looks
+considerably more expensive:
+
+```html
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <picture><source srcset="assets/img/hero-foto.webp" type="image/webp">
+      <img decoding="async" fetchpriority="high" src="assets/img/hero-foto.jpg"
+           onerror="this.onerror=null;this.src='assets/img/hero.svg'"
+           width="1920" height="1267" alt=""></picture>
+  </div>
+  <div class="container"><div class="hero-grid">
+    <div class="hero__content" data-reveal> …h1, subhead, CTAs, trust row… </div>
+    <div class="hero__aside" data-reveal data-reveal-delay="1"> …rating badge… </div>
+  </div></div>
+</section>
+```
+
+Three things B gets wrong if you're careless: the photo is decorative, so it takes
+`aria-hidden` on the wrapper and an empty `alt`; on mobile the text sits *on* the
+photo rather than beside it, so the gradient must be far stronger (handled in the
+bundled media query); and `preload` must point at the photo, not at the old hero
+SVG. Crop the source from the **original** the client sent, not from the
+gallery-sized copy — a 1200 px file looks soft stretched across a desktop hero.
 
 ## 5. 3-step inquiry wizard
 The conversion centrepiece. Powered by `wizard.js` (reused as-is). Structure:
