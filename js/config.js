@@ -56,6 +56,21 @@ window.MH_CONFIG = {
     responseTime: "24 hodín"
   },
 
+  /* ---- Orientačný cenník (cennik.html) ---------------------------------
+     Doplňte reálne sumy, napr. "od 149 € / m²". Ak necháte hodnotu prázdnu
+     (""), v tabuľke sa zobrazí neutrálne „Na vyžiadanie" – web tak môže byť
+     zverejnený aj predtým, než ceny finálne určíte.
+     ---------------------------------------------------------------------- */
+  pricing: {
+    exterioroveZaluzie: "",              // napr. "od 149 € / m²"
+    exterioroveRolety:  "",              // napr. "od 129 € / m²"
+    interioroveZaluzie: "",              // napr. "od 39 € / ks"
+    latkoveRolety:      "",              // napr. "od 45 € / ks"
+    sietePevne:         "",              // napr. "od 49 € / ks"
+    sieteDverove:       "",              // napr. "od 129 € / ks"
+    montaz:             "Zameranie ZDARMA"
+  },
+
   /* ---- Doručovanie formulárov ------------------------------------------
      Formuláre (wizard + kontakt) fungujú aj bez nastavenia – v tom prípade
      otvoria e-mailového klienta (mailto). Pre plnohodnotné odosielanie

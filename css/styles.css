@@ -47,6 +47,7 @@
   --c-border-dark: #574d48;
   --c-star:        #f5b301;
   --c-success:     #1e9e6a;
+  --c-success-700: #147a51;   /* tmavší odtieň pre text na bielom (WCAG AA) */
   --c-success-bg:  #e7f7ef;
   --c-error:       #d64545;
 
@@ -143,7 +144,12 @@ p:last-child { margin-bottom: 0; }
   text-transform: uppercase; color: var(--c-accent-600);
 }
 .eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--c-accent); border-radius: 2px; }
-.section--dark .eyebrow { color: var(--c-accent-300); }
+/* Na tmavom podklade (hero, page-hero, tmavé sekcie) svetlý odtieň akcentu –
+   tmavočervená by na antracite nebola čitateľná. */
+.section--dark .eyebrow,
+.hero .eyebrow,
+.page-hero .eyebrow,
+.edu .eyebrow { color: var(--c-accent-300); }
 
 .section-head { max-width: 720px; margin-bottom: 2.5rem; }
 .section-head.center { margin-inline: auto; text-align: center; }
@@ -168,10 +174,19 @@ p:last-child { margin-bottom: 0; }
   display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
   padding: .85rem 1.5rem; border-radius: 999px; font-weight: 700; font-size: var(--fs-400);
   line-height: 1.1; text-align: center; cursor: pointer; white-space: nowrap;
+  max-width: 100%;
   transition: transform .12s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
   border: 2px solid transparent;
 }
+/* Na úzkych displejoch nechá dlhý text tlačidla zalomiť, aby nepretekal von. */
+@media (max-width: 560px) {
+  .btn { white-space: normal; }
+  .btn--lg { padding: .95rem 1.4rem; font-size: var(--fs-400); }
+}
 .btn svg { width: 1.15em; height: 1.15em; flex: none; }
+
+/* <picture> je len obal pre WebP/JPEG – nesmie ovplyvniť rozloženie obrázka */
+picture { display: contents; }
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0); }
 .btn--primary { background: var(--c-accent); color: #fff; box-shadow: 0 8px 20px rgba(139,58,44,.28); }
@@ -438,7 +453,7 @@ p:last-child { margin-bottom: 0; }
 .price-table tbody tr:hover { background: var(--c-bg-alt); }
 .price-table .cat { font-weight: 700; color: var(--c-dark); }
 .price-table .price { font-weight: 800; color: var(--c-accent-600); white-space: nowrap; }
-.price-table .price.free { color: var(--c-success); }
+.price-table .price.free { color: var(--c-success-700); }
 .price-table tbody tr:last-child td { border-bottom: none; }
 
 /* Process steps (Ako pracujeme) */
@@ -574,12 +589,15 @@ p:last-child { margin-bottom: 0; }
 .site-footer h4 { color: #fff; font-size: .95rem; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 1rem; }
 .site-footer a { color: #c2b4a8; }
 .site-footer a:hover { color: var(--c-accent-300); }
-.footer-links { list-style: none; padding: 0; display: grid; gap: .55rem; font-size: var(--fs-300); }
+.footer-links { list-style: none; padding: 0; display: grid; gap: .15rem; font-size: var(--fs-300); }
+/* Dostatočne veľká dotyková plocha odkazov (WCAG 2.5.8 – min. 24 px) */
+.footer-links a { display: inline-flex; align-items: center; min-height: 24px; padding: .2rem 0; }
 .footer-about .brand { color: #fff; margin-bottom: 1rem; }
 .footer-about .brand__name { color: #fff; }
 .site-footer .brand__tag { color: #b4a69b; }
 .footer-about p { font-size: var(--fs-300); color: #a0928a; }
 .footer-contact { font-size: var(--fs-300); display: grid; gap: .6rem; }
+.footer-contact a { display: inline-flex; align-items: center; min-height: 24px; }
 .footer-contact div { display: flex; gap: .55rem; align-items: flex-start; }
 .footer-contact svg { width: 18px; height: 18px; color: var(--c-accent-300); flex: none; margin-top: 3px; }
 .footer-social { display: flex; gap: .6rem; margin-top: 1rem; }
@@ -588,7 +606,7 @@ p:last-child { margin-bottom: 0; }
 .footer-social svg { width: 20px; height: 20px; }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); margin-top: 2.5rem; padding-block: 1.4rem; font-size: var(--fs-200); color: #94867e; }
 .footer-bottom .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1.5rem; }
-.footer-bottom a { color: #b4a69b; }
+.footer-bottom a { color: #b4a69b; display: inline-flex; align-items: center; min-height: 24px; }
 
 /* 19. COOKIE LIŠTA + MOBILNÁ CTA LIŠTA =============================== */
 .cookie-bar {
@@ -624,7 +642,7 @@ p:last-child { margin-bottom: 0; }
 .page-hero h1 { color: #fff; }
 .page-hero p { color: #d3c6bc; max-width: 640px; margin-top: .6rem; font-size: var(--fs-500); }
 .breadcrumb { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; font-size: var(--fs-200); color: #ab9d92; margin-bottom: .8rem; }
-.breadcrumb a { color: #d3c6bc; }
+.breadcrumb a { color: #d3c6bc; display: inline-flex; align-items: center; min-height: 24px; }
 .breadcrumb li:not(:last-child)::after { content: "›"; margin-left: .4rem; color: #7e7169; }
 
 /* Prose (legal pages, about) */

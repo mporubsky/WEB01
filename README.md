@@ -103,9 +103,20 @@ Kým je pole prázdne, zobrazí sa elegantný zástupný blok s tlačidlom na ot
 ### 5) Sociálne siete → `js/config.js` (sekcia `social`)
 Vyplňte odkazy (Facebook / Instagram / Google recenzie). Prázdne polia sa nezobrazia.
 
-### 6) Ceny v cenníku → `cennik.html`
-Nahraďte texty `od XX €` reálnymi sumami. Tabuľka je priamo v HTML — vyhľadajte
-`class="price"` a upravte hodnoty.
+### 6) Ceny v cenníku → `js/config.js` (sekcia `pricing`)
+Ceny sa dopĺňajú na jednom mieste v `config.js`:
+
+```js
+pricing: {
+  exterioroveZaluzie: "od 149 € / m²",   // ← vaša reálna cena
+  interioroveZaluzie: "",                 // prázdne = zobrazí „Na vyžiadanie"
+  ...
+}
+```
+
+Kým je hodnota prázdna (`""`), v tabuľke sa návštevníkovi zobrazí neutrálne
+**„Na vyžiadanie"** — web teda môže byť zverejnený aj predtým, než ceny finálne
+určíte. Nikdy sa nezobrazí žiadny zástupný text typu „XX €".
 
 ### 7) Skutočné fotografie realizácií → priečinok `assets/img/`
 
